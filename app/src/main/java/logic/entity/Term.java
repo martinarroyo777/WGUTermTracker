@@ -1,18 +1,21 @@
 package logic.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Represents a Term. Each term has Courses associated with it.
  */
 @Entity(tableName = "term")
-public class Term {
+public class Term implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name="title")
@@ -22,7 +25,19 @@ public class Term {
     @ColumnInfo(name="endDate")
     private String endDate;
     @Ignore
-    private List<Course> courses;
+    private ArrayList<Course> courses;
+    @Ignore
+    public static final Creator<Term> CREATOR = new Creator<Term>() {
+        @Override
+        public Term createFromParcel(Parcel parcel) {
+            return new Term(parcel);
+        }
+
+        @Override
+        public Term[] newArray(int i) {
+            return new Term[i];
+        }
+    };
 
     /**
      * Basic constructor for Term
@@ -36,6 +51,14 @@ public class Term {
         this.endDate = endDate;
     }
 
+    @Ignore
+    protected Term(Parcel in){
+        id = in.readInt();
+        title = in.readString();
+        startDate = in.readString();
+        endDate = in.readString();
+
+    }
 
     /**
      * Get the termId
@@ -122,7 +145,7 @@ public class Term {
         return res.toString();
     }
 
-    public List<Course> getCourses(){
+    public ArrayList<Course> getCourses(){
         return this.courses;
     }
 
@@ -131,6 +154,20 @@ public class Term {
     }
 
     public boolean hasCourses(){
-        return this.courses.isEmpty();
+        return this.courses != null || !this.courses.isEmpty();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(this.id);
+        parcel.writeString(this.title);
+        parcel.writeString(this.startDate);
+        parcel.writeString(this.endDate);
+        parcel.writeList(this.courses);
     }
 }

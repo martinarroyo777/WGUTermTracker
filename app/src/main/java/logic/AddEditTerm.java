@@ -57,11 +57,20 @@ public class AddEditTerm extends AppCompatActivity {
         cancel = (Button) findViewById(R.id.cancel);
         // If there is an intent extra, set up the fields to reflect that
         Intent modIntent = getIntent();
-        if (modIntent.hasExtra(MOD_TERM_ID)){
+        //if (modIntent.hasExtra(MOD_TERM_ID)){
+        if (modIntent.hasExtra("Mod Term")){
             update = true;
+        /*
             termTitle.setText(modIntent.getStringExtra(MOD_TERM_TITLE));
             startDate.setText(modIntent.getStringExtra(MOD_TERM_START));
             endDate.setText(modIntent.getStringExtra(MOD_TERM_END));
+            start = LocalDate.parse(startDate.getText());
+            end = LocalDate.parse(endDate.getText());
+         */
+            term = modIntent.getParcelableExtra("Mod Term");
+            termTitle.setText(term.getTitle());
+            startDate.setText(term.getStartDate());
+            endDate.setText(term.getEndDate());
             start = LocalDate.parse(startDate.getText());
             end = LocalDate.parse(endDate.getText());
         }
@@ -137,15 +146,24 @@ public class AddEditTerm extends AppCompatActivity {
         String termEnd = end.toString();
         Intent intent = new Intent();
         if (update){
+            /*
             intent.putExtra(MOD_TERM_TITLE,this.title);
             intent.putExtra(MOD_TERM_START,termStart);
             intent.putExtra(MOD_TERM_END,termEnd);
             int id = getIntent().getIntExtra(MOD_TERM_ID,-1);
             intent.putExtra(MOD_TERM_ID,id);
+             */
+            term.setTitle(this.title);
+            term.setStartDate(termStart);
+            term.setEndDate(termEnd);
+            intent.putExtra("Mod Term",term);
         } else {
+            /*
             intent.putExtra(NEW_TERM_TITLE,this.title);
             intent.putExtra(NEW_TERM_START,termStart);
             intent.putExtra(NEW_TERM_END,termEnd);
+             */
+            intent.putExtra("New Term",new Term(this.title,termStart,termEnd));
         }
         setResult(RESULT_OK,intent);
         finish();

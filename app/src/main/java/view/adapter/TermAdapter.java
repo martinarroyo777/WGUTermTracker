@@ -87,10 +87,13 @@ public class TermAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(((TermMainActivity)context), AddEditTerm.class);
+                    /*
                     intent.putExtra(AddEditTerm.MOD_TERM_ID,current.getId());
                     intent.putExtra(AddEditTerm.MOD_TERM_TITLE,current.getTitle());
                     intent.putExtra(AddEditTerm.MOD_TERM_START,current.getStartDate());
                     intent.putExtra(AddEditTerm.MOD_TERM_END,current.getEndDate());
+                     */
+                    intent.putExtra("Mod Term", current);
                     ((TermMainActivity)context).startActivityForResult(intent, TermMainActivity.TERM_MOD_CODE);
                 }
             });
