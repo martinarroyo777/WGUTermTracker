@@ -12,12 +12,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.martinarroyo.termtracker.R;
+import com.martinarroyo.wgutermtracker.R;
 
 import java.time.LocalDate;
 import java.util.Calendar;
 
-import logic.Term;
+import logic.entity.Term;
+
 
 /**
  * Fragment to handle entering a new Term or modifying an existing one

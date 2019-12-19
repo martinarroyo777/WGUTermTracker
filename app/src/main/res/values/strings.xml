@@ -1,4 +1,40 @@
 <resources>
     <string name="app_name">WGUTermTracker</string>
     <string name="action_settings">Settings</string>
+    <!-- Adding/Modifying Terms -->
+    <string name="addmodterm_termtitle">Term Title</string>
+    <string name="addmodterm_startdate">Start Date</string>
+    <string name="addmodterm_enddate">End Date</string>
+    <string name="addmodterm_cancel">Cancel</string>
+    <string name="addmodterm_save">Save</string>
+    <!-- Adding/Modifying Courses -->
+    <string name="addmodcourse_title">Course Title</string>
+    <string name="addmodcourse_startdate">Start Date</string>
+    <string name="addmodcourse_enddate">End Date</string>
+    <string name="addmodcourse_cancel">Cancel</string>
+    <string name="addmodcourse_save">Save</string>
+    <string name="addmodcourse_status">Status</string>
+    <string name="addmodcourse_courselisthead">Courses:</string>
+    <string name="addmodcoursementor_name">Course Mentor Name</string>
+    <string name="addmodcoursementor_email">Email Address</string>
+    <string name="addmodcoursementor_phone">Phone Number</string>
+    <string-array name="course_status">
+        <item>In Progress</item>
+        <item>Completed</item>
+        <item>Dropped</item>
+        <item>Plan to Take</item>
+    </string-array>
+    <!-- Adding/Modifying Assessments -->
+    <string name="addmodassessment_assessmentlisthead">Assessments:</string>
+    <string name="addmodassessment_coursementorhead">Course Mentor:</string>
+    <string name="addmodassessment_title">Assessment Title</string>
+    <string name="addmodassessment_duedate">Due Date</string>
+    <string name="addmodassessment_assessmenttype_label">Type:</string>
+    <string-array name="assessment_type">
+        <item>Performance</item>
+        <item>Objective</item>
+    </string-array>
+    <!-- Adding/Modifying Notes -->
+    <string name="note_title">Note Title</string>
+    <string name="note_body">Write Something Here...</string>
 </resources>
