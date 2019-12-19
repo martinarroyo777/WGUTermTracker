@@ -1,42 +1,51 @@
 package com.martinarroyo.wgutermtracker;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import logic.entity.Term;
+
 public class TermDetailActivity extends AppCompatActivity {
+    private Term term;
     public static final int COURSE_ADD_CODE = 4;
     public static final int COURSE_MOD_CODE = 5;
     public static final int COURSE_DETAIL_CODE = 6;
-    public static final String TERMDETAIL_ID = "ID";
-    public static final String TERMDETAIL_TITLE = "Title";
-    public static final String TERMDETAIL_START = "Start";
-    public static final String TERMDETAIL_END = "End";
+    public static final String TERM_DETAIL = "Term Detail";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.term_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.term_detail_layout);
+        /*
+            Set up Term details - Top of Screen
+         */
+        TextView mTermTitle = findViewById(R.id.termdetail_title);
+        TextView mTermDates = findViewById(R.id.termdetail_dates);
+        Intent termDetail = getIntent();
+        if (termDetail.hasExtra(TERM_DETAIL)){
+            term = termDetail.getParcelableExtra(TERM_DETAIL);
+            mTermTitle.setText(term.getTitle());
+            mTermDates.setText("START: " + term.getStartDate() + "\n\nEND: " + term.getEndDate());
+        }
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab_addcourse);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Jizz in my pants", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
     }
 
+    /* ---- REMOVAL PENDING -------------------------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -58,4 +67,6 @@ public class TermDetailActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+     */
 }

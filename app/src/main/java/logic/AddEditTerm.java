@@ -35,20 +35,16 @@ public class AddEditTerm extends AppCompatActivity {
     LocalDate end;
     public EditText termTitle;
     String title;
-    public static final String NEW_TERM_TITLE = "New Title";
-    public static final String NEW_TERM_START = "New Start";
-    public static final String NEW_TERM_END = "New End";
-    public static final String MOD_TERM_ID = "Mod ID";
-    public static final String MOD_TERM_TITLE = "Mod Title";
-    public static final String MOD_TERM_START = "Mod Start";
-    public static final String MOD_TERM_END = "Mod End";
-    public static final String MOD_TERM_POS = "Mod Position";
+
+    public static final String NEW_TERM = "New Term";
+    public static final String MOD_TERM = "Modify Term";
+
     boolean update = false;
 
     @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
-        setContentView(R.layout.add_term);
+        setContentView(R.layout.add_term_dialog);
         // Initialize views and buttons
         termTitle = (EditText) findViewById(R.id.term_title);
         startDate = (TextView) findViewById(R.id.startdate);
@@ -57,17 +53,9 @@ public class AddEditTerm extends AppCompatActivity {
         cancel = (Button) findViewById(R.id.cancel);
         // If there is an intent extra, set up the fields to reflect that
         Intent modIntent = getIntent();
-        //if (modIntent.hasExtra(MOD_TERM_ID)){
-        if (modIntent.hasExtra("Mod Term")){
+        if (modIntent.hasExtra(MOD_TERM)){
             update = true;
-        /*
-            termTitle.setText(modIntent.getStringExtra(MOD_TERM_TITLE));
-            startDate.setText(modIntent.getStringExtra(MOD_TERM_START));
-            endDate.setText(modIntent.getStringExtra(MOD_TERM_END));
-            start = LocalDate.parse(startDate.getText());
-            end = LocalDate.parse(endDate.getText());
-         */
-            term = modIntent.getParcelableExtra("Mod Term");
+            term = modIntent.getParcelableExtra(MOD_TERM);
             termTitle.setText(term.getTitle());
             startDate.setText(term.getStartDate());
             endDate.setText(term.getEndDate());
@@ -146,24 +134,12 @@ public class AddEditTerm extends AppCompatActivity {
         String termEnd = end.toString();
         Intent intent = new Intent();
         if (update){
-            /*
-            intent.putExtra(MOD_TERM_TITLE,this.title);
-            intent.putExtra(MOD_TERM_START,termStart);
-            intent.putExtra(MOD_TERM_END,termEnd);
-            int id = getIntent().getIntExtra(MOD_TERM_ID,-1);
-            intent.putExtra(MOD_TERM_ID,id);
-             */
             term.setTitle(this.title);
             term.setStartDate(termStart);
             term.setEndDate(termEnd);
-            intent.putExtra("Mod Term",term);
+            intent.putExtra(MOD_TERM,term);
         } else {
-            /*
-            intent.putExtra(NEW_TERM_TITLE,this.title);
-            intent.putExtra(NEW_TERM_START,termStart);
-            intent.putExtra(NEW_TERM_END,termEnd);
-             */
-            intent.putExtra("New Term",new Term(this.title,termStart,termEnd));
+            intent.putExtra(NEW_TERM,new Term(this.title,termStart,termEnd));
         }
         setResult(RESULT_OK,intent);
         finish();

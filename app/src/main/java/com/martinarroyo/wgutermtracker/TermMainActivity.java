@@ -29,10 +29,12 @@ public class TermMainActivity extends AppCompatActivity {
     TermAdapter termAdapter;
     RecyclerView recyclerView;
     TermViewModel mTermViewModel;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.term_main);
+        setContentView(R.layout.term_main_layout);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Set up our recycler view
@@ -66,32 +68,14 @@ public class TermMainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         // INSERT Term
         if (requestCode == TERM_ADD_CODE && resultCode == RESULT_OK) {
-            /*
-            String termTitle = data.getStringExtra(AddEditTerm.NEW_TERM_TITLE);
-            String startDate = data.getStringExtra(AddEditTerm.NEW_TERM_START);
-            String endDate = data.getStringExtra(AddEditTerm.NEW_TERM_END);
-            // Inflate our term
-            Term term = new Term(termTitle,startDate,endDate);
-            Log.d("Term info from main activity", termTitle);
-
-             */
-            Term term = data.getParcelableExtra("New Term");
+            Term term = data.getParcelableExtra(AddEditTerm.NEW_TERM);
             mTermViewModel.insert(term);
             Toast.makeText(this, "Term Added Successfully", Toast.LENGTH_SHORT).show();
-
         }
         // UPDATE Term
         else if (requestCode == TERM_MOD_CODE && resultCode == RESULT_OK) {
-            /*
-            String termTitle = data.getStringExtra(AddEditTerm.MOD_TERM_TITLE);
-            String startDate = data.getStringExtra(AddEditTerm.MOD_TERM_START);
-            String endDate = data.getStringExtra(AddEditTerm.MOD_TERM_END);
-            int id = data.getIntExtra(AddEditTerm.MOD_TERM_ID,-1);
-            // Inflate term
-            Term term = new Term(termTitle,startDate,endDate);
-            term.setId(id);
-             */
-            Term term = data.getParcelableExtra("Mod Term");
+
+            Term term = data.getParcelableExtra(AddEditTerm.MOD_TERM);
             mTermViewModel.update(term);
             Toast.makeText(this, "Term updated:\n" + term.toString(),Toast.LENGTH_SHORT).show();
         }

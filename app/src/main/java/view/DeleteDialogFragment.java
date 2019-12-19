@@ -28,7 +28,7 @@ public class DeleteDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         //Construct view
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.delete_dialog,null);
+        View view = inflater.inflate(R.layout.delete_item_dialog,null);
         TextView message = view.findViewById(R.id.delete_message);
         message.setText("Are you sure you want to delete this item?");
 

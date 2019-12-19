@@ -72,12 +72,15 @@ public class TermAdapter extends RecyclerView.Adapter {
             holder1.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(((TermMainActivity)context), TermMainActivity.class);
+                    Intent intent = new Intent(((TermMainActivity)context), TermDetailActivity.class);
+                    /*
                     intent.putExtra(TermDetailActivity.TERMDETAIL_TITLE,current.getTitle());
                     intent.putExtra(TermDetailActivity.TERMDETAIL_START,current.getStartDate());
                     intent.putExtra(TermDetailActivity.TERMDETAIL_END,current.getEndDate());
                     intent.putExtra(TermDetailActivity.TERMDETAIL_ID,current.getId());
                     intent.putExtra("Term Adapter Position", currentPosition);
+                     */
+                    intent.putExtra(TermDetailActivity.TERM_DETAIL,current);
                     ((TermMainActivity)context).startActivityForResult(intent, TermMainActivity.TERM_DETAIL_CODE);
                     //Toast.makeText(context,"Pressed View Term Detail Button", Toast.LENGTH_SHORT).show();
                 }
