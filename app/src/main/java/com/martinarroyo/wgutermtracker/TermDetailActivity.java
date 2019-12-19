@@ -11,11 +11,14 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-public class TermMainActivity extends AppCompatActivity {
-    public static final int TERM_ADD_CODE = 1;
-    public static final int TERM_MOD_CODE = 2;
-    public static final int TERM_DETAIL_CODE = 3;
-
+public class TermDetailActivity extends AppCompatActivity {
+    public static final int COURSE_ADD_CODE = 4;
+    public static final int COURSE_MOD_CODE = 5;
+    public static final int COURSE_DETAIL_CODE = 6;
+    public static final String TERMDETAIL_ID = "ID";
+    public static final String TERMDETAIL_TITLE = "Title";
+    public static final String TERMDETAIL_START = "Start";
+    public static final String TERMDETAIL_END = "End";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
