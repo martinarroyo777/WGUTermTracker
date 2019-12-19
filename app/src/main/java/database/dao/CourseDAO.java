@@ -9,7 +9,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import logic.Course;
+import logic.entity.Course;
 
 @Dao
 public interface CourseDAO {

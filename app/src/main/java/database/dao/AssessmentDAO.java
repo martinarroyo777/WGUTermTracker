@@ -9,7 +9,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import logic.Assessment;
+import logic.entity.Assessment;
 
 @Dao
 public interface AssessmentDAO {

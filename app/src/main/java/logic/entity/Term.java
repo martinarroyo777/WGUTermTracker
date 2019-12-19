@@ -1,4 +1,4 @@
-package logic;
+package logic.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

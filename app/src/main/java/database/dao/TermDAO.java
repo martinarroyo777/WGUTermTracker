@@ -9,8 +9,8 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import logic.Course;
-import logic.Term;
+import logic.entity.Course;
+import logic.entity.Term;
 
 @Dao
 public interface TermDAO {

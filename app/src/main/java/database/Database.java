@@ -12,10 +12,10 @@ import database.dao.AssessmentDAO;
 import database.dao.CourseDAO;
 import database.dao.CourseNoteDAO;
 import database.dao.TermDAO;
-import logic.Assessment;
-import logic.Course;
-import logic.CourseNote;
-import logic.Term;
+import logic.entity.Assessment;
+import logic.entity.Course;
+import logic.entity.CourseNote;
+import logic.entity.Term;
 
 @androidx.room.Database(entities = {Term.class, Course.class, Assessment.class, CourseNote.class}, version = 1)
 public abstract class Database extends RoomDatabase {
