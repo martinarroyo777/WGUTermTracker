@@ -73,16 +73,8 @@ public class TermAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(((TermMainActivity)context), TermDetailActivity.class);
-                    /*
-                    intent.putExtra(TermDetailActivity.TERMDETAIL_TITLE,current.getTitle());
-                    intent.putExtra(TermDetailActivity.TERMDETAIL_START,current.getStartDate());
-                    intent.putExtra(TermDetailActivity.TERMDETAIL_END,current.getEndDate());
-                    intent.putExtra(TermDetailActivity.TERMDETAIL_ID,current.getId());
-                    intent.putExtra("Term Adapter Position", currentPosition);
-                     */
                     intent.putExtra(TermDetailActivity.TERM_DETAIL,current);
                     ((TermMainActivity)context).startActivityForResult(intent, TermMainActivity.TERM_DETAIL_CODE);
-                    //Toast.makeText(context,"Pressed View Term Detail Button", Toast.LENGTH_SHORT).show();
                 }
             });
             // MODIFY Term
@@ -90,12 +82,6 @@ public class TermAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(((TermMainActivity)context), AddEditTerm.class);
-                    /*
-                    intent.putExtra(AddEditTerm.MOD_TERM_ID,current.getId());
-                    intent.putExtra(AddEditTerm.MOD_TERM_TITLE,current.getTitle());
-                    intent.putExtra(AddEditTerm.MOD_TERM_START,current.getStartDate());
-                    intent.putExtra(AddEditTerm.MOD_TERM_END,current.getEndDate());
-                     */
                     intent.putExtra("Mod Term", current);
                     ((TermMainActivity)context).startActivityForResult(intent, TermMainActivity.TERM_MOD_CODE);
                 }

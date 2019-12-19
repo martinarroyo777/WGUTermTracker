@@ -1,5 +1,8 @@
 package logic.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -10,7 +13,7 @@ import androidx.room.PrimaryKey;
  * Represents a Course. All Course instances must have a term to which they are associated.
  */
 @Entity(tableName = "course", foreignKeys = @ForeignKey(entity = Term.class,parentColumns = "id",childColumns = "termId", onDelete = ForeignKey.CASCADE))
-public class Course {
+public class Course implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name = "termId")
@@ -30,6 +33,18 @@ public class Course {
     @ColumnInfo(name="mentor_phone")
     private String mentor_phone;
 
+    @Ignore
+    public static final Creator<Course> CREATOR = new Creator<Course>() {
+        @Override
+        public Course createFromParcel(Parcel parcel) {
+            return new Course(parcel);
+        }
+
+        @Override
+        public Course[] newArray(int i) {
+            return new Course[i];
+        }
+    };
 
     /**
      * Basic constructor for Course
@@ -59,6 +74,18 @@ public class Course {
     @Ignore
     public Course(){};
 
+    @Ignore
+    protected Course(Parcel in){
+        id = in.readInt();
+        termId = in.readInt();
+        title = in.readString();
+        startDate = in.readString();
+        endDate = in.readString();
+        status = in.readString();
+        mentor_name = in.readString();
+        mentor_email = in.readString();
+        mentor_phone = in.readString();
+    };
     /**
      * Get the course id
      * @return courseId
@@ -194,5 +221,23 @@ public class Course {
         res.append(this.mentor_phone);
         return res.toString();
 
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(this.id);
+        parcel.writeInt(this.termId);
+        parcel.writeString(this.title);
+        parcel.writeString(this.startDate);
+        parcel.writeString(this.endDate);
+        parcel.writeString(this.status);
+        parcel.writeString(this.mentor_name);
+        parcel.writeString(this.mentor_email);
+        parcel.writeString(this.mentor_phone);
     }
 }

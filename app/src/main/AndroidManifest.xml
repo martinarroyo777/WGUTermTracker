@@ -21,6 +21,7 @@
         </activity>
         <activity android:name="logic.AddEditTerm"></activity>
         <activity android:name=".TermDetailActivity"></activity>
+        <activity android:name="logic.AddEditCourse"></activity>
     </application>
 
 </manifest>
