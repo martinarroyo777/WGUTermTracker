@@ -8,6 +8,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import database.dao.AssessmentDAO;
+import database.dao.CourseDAO;
+import database.dao.CourseNoteDAO;
+import database.dao.TermDAO;
 import logic.Assessment;
 import logic.Course;
 import logic.CourseNote;
@@ -15,8 +19,13 @@ import logic.Term;
 
 @androidx.room.Database(entities = {Term.class, Course.class, Assessment.class, CourseNote.class}, version = 1)
 public abstract class Database extends RoomDatabase {
-
+    // Include the data access objects
+    public abstract TermDAO termDAO();
+    public abstract CourseDAO courseDAO();
+    public abstract AssessmentDAO assessmentDAO();
+    public abstract CourseNoteDAO courseNoteDAO();
     private static volatile Database INSTANCE;
+
     public static Database getDatabase(final Context context){
         // If the database hasn't been instantiated already, do so
         if (INSTANCE == null){
