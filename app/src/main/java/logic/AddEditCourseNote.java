@@ -9,8 +9,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.martinarroyo.termtracker.CourseDetailActivity;
-import com.martinarroyo.termtracker.R;
+import com.martinarroyo.wgutermtracker.R;
+
 
 public class AddEditCourseNote extends AppCompatActivity {
 
@@ -33,8 +33,8 @@ public class AddEditCourseNote extends AppCompatActivity {
     @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
-        setContentView(R.layout.add_note);
-        courseId = getIntent().getIntExtra(CourseDetailActivity.COURSEDETAIL_ID,-1);
+        setContentView(R.layout.add_note_dialog);
+        courseId = 1;//getIntent().getIntExtra(CourseDetailActivity.COURSEDETAIL_ID,-1);
         // Initialize views and buttons
         mNoteTitle = (EditText) findViewById(R.id.addnote_title);
         mNoteBody = (EditText) findViewById(R.id.addnote_body);
@@ -82,14 +82,13 @@ public class AddEditCourseNote extends AppCompatActivity {
     /**
      * Functionality for the Save Button
      */
-    //TODO add data validation for fields
     private void save(){
 
         this.title = mNoteTitle.getText().toString();
         this.body.append(mNoteBody.getText().toString());
         Intent intent = new Intent();
         // Always add the term id
-        intent.putExtra(CourseDetailActivity.COURSEDETAIL_ID,courseId);
+        //intent.putExtra(CourseDetailActivity.COURSEDETAIL_ID,courseId);
         if (update){
             intent.putExtra(MOD_NOTE_TITLE,this.title);
             intent.putExtra(MOD_NOTE_BODY,this.body.toString());

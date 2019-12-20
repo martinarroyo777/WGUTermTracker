@@ -15,11 +15,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-import logic.Note;
-import view.AddEditNote;
+import logic.AddEditCourseNote;
+import logic.entity.CourseNote;
 import view.DeleteDialogFragment;
-import view.adapters.NoteAdapter;
-import view.viewmodels.NoteViewModel;
+import view.adapter.CourseNoteAdapter;
+import view.viewmodel.NoteViewModel;
+
+
 
 public class NoteDetailActivity extends AppCompatActivity implements DeleteDialogFragment.DeleteDialogListener{
 
@@ -37,7 +39,7 @@ public class NoteDetailActivity extends AppCompatActivity implements DeleteDialo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_note);
+        setContentView(R.layout.note_detail_layout);
         // Get id from course detail/adapter
         Intent courseDetail = getIntent();
         if (courseDetail.hasExtra(COURSEDETAIL_ID)){
@@ -46,14 +48,14 @@ public class NoteDetailActivity extends AppCompatActivity implements DeleteDialo
 
         // Set up our recycler view
         recyclerView = findViewById(R.id.note_recyclerView);
-        final NoteAdapter adapter = new NoteAdapter(this);
+        final CourseNoteAdapter adapter = new CourseNoteAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // Get the ViewModel from ViewModelProvider
         mNoteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);        // Add an observer for the LiveData object
-        mNoteViewModel.getAllNotes(courseId).observe(this, new Observer<List<Note>>() {
+        mNoteViewModel.getAllNotes(courseId).observe(this, new Observer<List<CourseNote>>() {
             @Override
-            public void onChanged(List<Note> notes) {
+            public void onChanged(List<CourseNote> notes) {
                 adapter.setNotes(notes);
             }
         });
@@ -67,7 +69,7 @@ public class NoteDetailActivity extends AppCompatActivity implements DeleteDialo
             @Override
             public void onClick(View view) {
                 //Start AddEditAssessment for a result
-                Intent intent = new Intent(NoteDetailActivity.this, AddEditNote.class);
+                Intent intent = new Intent(NoteDetailActivity.this, AddEditCourseNote.class);
                 intent.putExtra(COURSEDETAIL_ID,courseId);
                 startActivityForResult(intent, NOTE_ADD_CODE);
             }
@@ -96,17 +98,20 @@ public class NoteDetailActivity extends AppCompatActivity implements DeleteDialo
         // INSERT Assessment
         if (requestCode == NOTE_ADD_CODE && resultCode == RESULT_OK) {
             // Get data from intent
+            /*
             String title = data.getStringExtra(AddEditNote.NEW_NOTE_TITLE);
             String body = data.getStringExtra(AddEditNote.NEW_NOTE_BODY);
             // Inflate our Note
             Note note = new Note(courseId,title,body);
             // Insert note into viewmodel
             mNoteViewModel.insert(note);
+             */
             Toast.makeText(this, "Note Added Successfully" , Toast.LENGTH_SHORT).show();
         }
         // UPDATE Assessment
         else if (requestCode == NOTE_MOD_CODE && resultCode == RESULT_OK) {
             // Get data from intent and store in variables
+            /*
             String title = data.getStringExtra(AddEditNote.MOD_NOTE_TITLE);
             String body = data.getStringExtra(AddEditNote.MOD_NOTE_BODY);
             int id = data.getIntExtra(AddEditNote.MOD_NOTE_ID,-1);
@@ -116,6 +121,7 @@ public class NoteDetailActivity extends AppCompatActivity implements DeleteDialo
             note.setId(id);
            // Update view model
             mNoteViewModel.update(note);
+             */
             Toast.makeText(this, "Note Updated Successfully",Toast.LENGTH_SHORT).show();
 
         }

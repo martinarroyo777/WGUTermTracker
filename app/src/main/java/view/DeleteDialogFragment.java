@@ -20,6 +20,7 @@ public class DeleteDialogFragment extends DialogFragment {
     private DeleteDialogListener listener;
     public static final int DELETE_CONFIRM_CODE = 0;
     public static final int DELETE_CANCEL_CODE = 1;
+    public static final String ITEM_POS = "Item Position";
     private int itemPosition;
 
 
@@ -74,7 +75,7 @@ public class DeleteDialogFragment extends DialogFragment {
         super.onActivityCreated(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null){
-            this.itemPosition = bundle.getInt("Term Position");
+            this.itemPosition = bundle.getInt(ITEM_POS);
         } else{
             this.itemPosition = -1;
         }

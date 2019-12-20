@@ -61,16 +61,16 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
             mCourseMentorPhone.setText(course.getMentor_phone());
 
         }
-        /*
+
         mViewNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CourseDetailActivity.this,NoteDetailActivity.class);
-                intent.putExtra(NoteDetailActivity.COURSEDETAIL_ID,courseId);
+                //intent.putExtra(NoteDetailActivity.COURSEDETAIL_ID,courseId);
                 startActivity(intent);
             }
         });
-         */
+
         // Set up our recycler view
         recyclerView = findViewById(R.id.coursedetail_recycleview);
         final AssessmentAdapter adapter = new AssessmentAdapter(this);
@@ -95,7 +95,7 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
             public void onClick(View view) {
                 //Start AddEditAssessment for a result
                 Intent intent = new Intent(CourseDetailActivity.this, AddEditAssessment.class);
-                //intent.putExtra(COURSEDETAIL_ID,courseId);
+                intent.putExtra(COURSE_DETAIL,course);
                 startActivityForResult(intent, ASSESSMENT_ADD_CODE);
             }
         });
@@ -108,8 +108,8 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
     public void getResponse(int response, int position){
         if (response == 0){
             // Delete term from db
-            //Toast.makeText(this,"The term position is " + position, Toast.LENGTH_SHORT).show();
-            mAssessmentViewModel.delete(mAssessmentViewModel.get(position));
+            Assessment assessment = mAssessmentViewModel.get(position);
+            mAssessmentViewModel.delete(assessment);
             Toast.makeText(this,"Assessment deleted successfully",Toast.LENGTH_SHORT).show();
         } else if (response == 1){
             Toast.makeText(this,"Canceled Assessment Deletion", Toast.LENGTH_SHORT).show();
@@ -122,35 +122,17 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
         super.onActivityResult(requestCode, resultCode, data);
         // INSERT Assessment
         if (requestCode == ASSESSMENT_ADD_CODE && resultCode == RESULT_OK) {
-            /*
-            // Get data from intent
-            String assessmentTitle = data.getStringExtra(AddEditAssessment.NEW_ASSESSMENT_TITLE);
-            String assessmentDueDate = data.getStringExtra(AddEditAssessment.NEW_ASSESSMENT_DUEDATE);
-            String assessmentType = data.getStringExtra(AddEditAssessment.NEW_ASSESSMENT_TYPE);
             // Inflate our Assessment
-            Assessment assessment = new Assessment(course.getId(),assessmentTitle,assessmentType,assessmentDueDate);
-            // Insert assessment into viewmodel
+            Assessment assessment = data.getParcelableExtra(AddEditAssessment.NEW_ASSESSMENT);
+            // Insert assessment into view model
             mAssessmentViewModel.insert(assessment);
-
-             */
             Toast.makeText(this, "Assessment Added Successfully", Toast.LENGTH_SHORT).show();
-
         }
         // UPDATE Assessment
         else if (requestCode == ASSESSMENT_MOD_CODE && resultCode == RESULT_OK) {
-            // Get data from intent and store in variables
-            /*
-            String assessmentTitle = data.getStringExtra(AddEditAssessment.MOD_ASSESSMENT_TITLE);
-            String assessmentDueDate = data.getStringExtra(AddEditAssessment.MOD_ASSESSMENT_DUEDATE);
-            String assessmentType = data.getStringExtra(AddEditAssessment.MOD_ASSESSMENT_TYPE);
-            int assessmentID = data.getIntExtra(AddEditAssessment.MOD_ASSESSMENT_ID,-1);
-            // Inflate assessment
-            Assessment assessment = new Assessment(courseId,assessmentTitle,assessmentType,assessmentDueDate);
-           // Set assessment id
-            assessment.setId(assessmentID);
+            Assessment assessment = data.getParcelableExtra(AddEditAssessment.MOD_ASSESSMENT);
            // Update view model
             mAssessmentViewModel.update(assessment);
-             */
             Toast.makeText(this, "Assessment Updated Successfully",Toast.LENGTH_SHORT).show();
         }
 
@@ -161,5 +143,7 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
                     Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
 }

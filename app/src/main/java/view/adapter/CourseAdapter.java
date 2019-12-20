@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.martinarroyo.wgutermtracker.CourseDetailActivity;
 import com.martinarroyo.wgutermtracker.R;
 import com.martinarroyo.wgutermtracker.TermDetailActivity;
 
@@ -63,11 +64,9 @@ public class CourseAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         CourseAdapter.CourseViewHolder holder1 = (CourseAdapter.CourseViewHolder) holder;
-
         if (mCourses != null) {
             // Get an instance of the current item
             final Course current = mCourses.get(position);
-            final int currentPos = position;
             //Set up the data for each of the views
             holder1.courseTitleView.setText(current.getTitle());
             holder1.courseDatesView.setText(current.getStartDate() + " - " + current.getEndDate());
@@ -79,22 +78,9 @@ public class CourseAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(((TermDetailActivity)context),current.toString(),Toast.LENGTH_SHORT).show();
-                    /*
                     Intent intent = new Intent(((TermDetailActivity)context), CourseDetailActivity.class);
-                    intent.putExtra(CourseDetailActivity.COURSEDETAIL_TITLE,current.getTitle());
-                    intent.putExtra(CourseDetailActivity.COURSEDETAIL_START,current.getStartDate());
-                    intent.putExtra(CourseDetailActivity.COURSEDETAIL_END,current.getEndDate());
-                    //input course mentor info
-                    intent.putExtra(CourseDetailActivity.COURSEDETAIL_MENTORNAME,current.getMentor_name());
-                    intent.putExtra(CourseDetailActivity.COURSEDETAIL_MENTOREMAIL,current.getMentor_email());
-                    intent.putExtra(CourseDetailActivity.COURSEDETAIL_MENTORPHONE,current.getMentor_phone());
-                    //course status
-                    intent.putExtra(CourseDetailActivity.COURSEDETAIL_STATUS,current.getStatus());
-                    //course id
-                    intent.putExtra(CourseDetailActivity.COURSEDETAIL_ID,current.getId());
+                    intent.putExtra(CourseDetailActivity.COURSE_DETAIL,current);
                     ((TermDetailActivity)context).startActivityForResult(intent, TermDetailActivity.COURSE_DETAIL_CODE);
-                     */
-
                 }
             });
             // MODIFY Course
@@ -102,15 +88,6 @@ public class CourseAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(((TermDetailActivity)context), AddEditCourse.class);
-                    /*
-                    intent.putExtra(AddEditCourse.MOD_COURSE_ID,current.getId());
-                    intent.putExtra(AddEditCourse.MOD_COURSE_TITLE,current.getTitle());
-                    intent.putExtra(AddEditCourse.MODCOURSEMENTOR_NAME,current.getMentor_name());
-                    intent.putExtra(AddEditCourse.MODCOURSEMENTOR_PHONE,current.getMentor_phone());
-                    intent.putExtra(AddEditCourse.MODCOURSEMENTOR_EMAIL,current.getMentor_email());
-                    intent.putExtra(AddEditCourse.MOD_COURSE_START,current.getStartDate());
-                    intent.putExtra(AddEditCourse.MOD_COURSE_END,current.getEndDate());
-                     */
                     intent.putExtra(AddEditCourse.MOD_COURSE,current);
                     ((TermDetailActivity)context).startActivityForResult(intent, TermDetailActivity.COURSE_MOD_CODE);
                 }
@@ -127,14 +104,13 @@ public class CourseAdapter extends RecyclerView.Adapter {
                 }
 
             });
-
             //DELETE Course
             holder1.deleteCourse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     DeleteDialogFragment delete = new DeleteDialogFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("Course position",currentPos);
+                    bundle.putInt(DeleteDialogFragment.ITEM_POS,position);
                     delete.setArguments(bundle);
                     delete.show(((TermDetailActivity)context).getSupportFragmentManager(),"Delete Course?");
                 }

@@ -92,7 +92,7 @@ public class TermAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     DeleteDialogFragment delete = new DeleteDialogFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("Term Position",position);
+                    bundle.putInt(DeleteDialogFragment.ITEM_POS,position);
                     delete.setArguments(bundle);
                     delete.show(((TermMainActivity)context).getSupportFragmentManager(),"Delete Term?");
                 }

@@ -15,14 +15,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.martinarroyo.termtracker.CourseDetailActivity;
-import com.martinarroyo.termtracker.R;
+import com.martinarroyo.wgutermtracker.CourseDetailActivity;
+import com.martinarroyo.wgutermtracker.R;
 
 import java.time.LocalDate;
 import java.util.Calendar;
 
+import logic.entity.Assessment;
+import logic.entity.Course;
+
 public class AddEditAssessment extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    private int courseId;
+    Assessment assessment; // Assessment holder for assessments sent for modification
+    private Course course;
     EditText mAssessmentTitle;
     String title;
     Spinner mSelectAssessmentType;
@@ -32,20 +36,16 @@ public class AddEditAssessment extends AppCompatActivity implements AdapterView.
     TextView mDueDate;
     DatePickerDialog.OnDateSetListener mDueDateSetListener;
     LocalDate dueDate;
-    public static final String NEW_ASSESSMENT_TITLE = "New Assessment Title";
-    public static final String NEW_ASSESSMENT_TYPE = "New Assessment Type";
-    public static final String NEW_ASSESSMENT_DUEDATE = "New Assessment Due Date";
-    public static final String MOD_ASSESSMENT_ID = "Mod Assessment ID";
-    public static final String MOD_ASSESSMENT_TITLE = "New Assessment Title";
-    public static final String MOD_ASSESSMENT_TYPE = "New Assessment Type";
-    public static final String MOD_ASSESSMENT_DUEDATE = "New Assessment Due Date";
+    public static final String NEW_ASSESSMENT = "New Assessment";
+    public static final String MOD_ASSESSMENT = "Modify Assessment";
+
     boolean update = false;
 
     @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
-        setContentView(R.layout.add_assessment);
-        courseId = getIntent().getIntExtra(CourseDetailActivity.COURSEDETAIL_ID,-1);
+        setContentView(R.layout.add_assessment_dialog);
+        course = getIntent().getParcelableExtra(CourseDetailActivity.COURSE_DETAIL);
         // Initialize views and buttons
         mAssessmentTitle = (EditText) findViewById(R.id.assessment_title);
         mDueDate = (TextView) findViewById(R.id.assessment_duedate);
@@ -60,12 +60,13 @@ public class AddEditAssessment extends AppCompatActivity implements AdapterView.
         mSelectAssessmentType.setAdapter(typeAdapter);
         // If there is an intent extra, set up the fields to reflect that
         Intent modIntent = getIntent();
-        if (modIntent.hasExtra(MOD_ASSESSMENT_ID)){
+        if (modIntent.hasExtra(MOD_ASSESSMENT)){
             update = true;
             this.setTitle("Edit Assessment"); // Change title of screen if we are updating
-            mAssessmentTitle.setText(modIntent.getStringExtra(MOD_ASSESSMENT_TITLE));
-            mDueDate.setText(modIntent.getStringExtra(MOD_ASSESSMENT_DUEDATE));
-            mSelectAssessmentType.setSelection(typeAdapter.getPosition(modIntent.getStringExtra(MOD_ASSESSMENT_TYPE)));
+            assessment = modIntent.getParcelableExtra(MOD_ASSESSMENT);
+            mAssessmentTitle.setText(assessment.getTitle());
+            mDueDate.setText(assessment.getDueDate());
+            mSelectAssessmentType.setSelection(typeAdapter.getPosition(assessment.getType()));
             dueDate = LocalDate.parse(mDueDate.getText());
         }
 
@@ -118,24 +119,18 @@ public class AddEditAssessment extends AppCompatActivity implements AdapterView.
     /**
      * Functionality for the Save Button
      */
-    //TODO add data validation for fields
     private void save(){
 
         this.title = mAssessmentTitle.getText().toString();
         String assessmentDueDate = dueDate.toString();
         Intent intent = new Intent();
-        // Always add the course id
-        intent.putExtra(CourseDetailActivity.COURSEDETAIL_ID,courseId);
         if (update){
-            intent.putExtra(MOD_ASSESSMENT_TITLE,this.title);
-            intent.putExtra(MOD_ASSESSMENT_DUEDATE,assessmentDueDate);
-            intent.putExtra(MOD_ASSESSMENT_TYPE, mAssessmentType);
-            int id = getIntent().getIntExtra(MOD_ASSESSMENT_ID,-1);
-            intent.putExtra(MOD_ASSESSMENT_ID,id);
+            assessment.setTitle(this.title);
+            assessment.setDueDate(assessmentDueDate);
+            assessment.setType(mAssessmentType);
+            intent.putExtra(MOD_ASSESSMENT,assessment);
         } else {
-            intent.putExtra(NEW_ASSESSMENT_TITLE,this.title);
-            intent.putExtra(NEW_ASSESSMENT_DUEDATE,assessmentDueDate);
-            intent.putExtra(NEW_ASSESSMENT_TYPE, mAssessmentType);
+            intent.putExtra(NEW_ASSESSMENT, new Assessment(course.getId(),this.title,mAssessmentType,assessmentDueDate));
         }
         setResult(RESULT_OK,intent);
         finish();
@@ -163,8 +158,7 @@ public class AddEditAssessment extends AppCompatActivity implements AdapterView.
         this.mAssessmentType = parent.getItemAtPosition(pos).toString();
     }
     public void onNothingSelected(AdapterView<?> parent){
-        // TODO figure out what we should have here
-
+        // DO NOTHING
     }
 
 }

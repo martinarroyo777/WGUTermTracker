@@ -86,7 +86,6 @@ public class TermDetailActivity extends AppCompatActivity implements DeleteDialo
         }
         // UPDATE Course
         else if (requestCode == COURSE_MOD_CODE && resultCode == RESULT_OK) {
-
             // Inflate course
             Course course = data.getParcelableExtra(AddEditCourse.MOD_COURSE);
             mCourseViewModel.update(course);
@@ -111,7 +110,7 @@ public class TermDetailActivity extends AppCompatActivity implements DeleteDialo
         if (response == 0){
             // Delete term from db
             mCourseViewModel.delete(course);
-            Toast.makeText(this, "Course deleted successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Course deleted successfully",  Toast.LENGTH_SHORT).show();
         }
         else if (response == 1){
             //Cancel deletion

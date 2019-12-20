@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.martinarroyo.wgutermtracker.CourseDetailActivity;
 import com.martinarroyo.wgutermtracker.R;
-import com.martinarroyo.wgutermtracker.TermDetailActivity;
 
 import java.util.List;
 
@@ -42,6 +41,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter {
     }
     private final LayoutInflater mInflater;
     private List<Assessment> mAssessments; // Cached copy of Courses
+
     // Constructor for the Adapter -
     public AssessmentAdapter(Context context){
         mInflater = LayoutInflater.from(context);
@@ -62,7 +62,6 @@ public class AssessmentAdapter extends RecyclerView.Adapter {
         if (mAssessments != null) {
             // Get an instance of the current item
             final Assessment current = mAssessments.get(position);
-            final int currentPos = position;
             //Set up the data for each of the views
             holder1.mAssessmentTitleView.setText(current.getTitle());
             holder1.mDueDateView.setText(current.getDueDate());
@@ -73,12 +72,8 @@ public class AssessmentAdapter extends RecyclerView.Adapter {
             holder1.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Toast.makeText(((CourseDetailActivity)context),current.toString(),Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(((CourseDetailActivity)context), AddEditAssessment.class);
-                    intent.putExtra(AddEditAssessment.MOD_ASSESSMENT_ID,current.getId());
-                    intent.putExtra(AddEditAssessment.MOD_ASSESSMENT_TITLE,current.getTitle());
-                    intent.putExtra(AddEditAssessment.MOD_ASSESSMENT_DUEDATE,current.getDueDate());
-                    intent.putExtra(AddEditAssessment.MOD_ASSESSMENT_TYPE,current.getType());
+                    intent.putExtra(AddEditAssessment.MOD_ASSESSMENT,current);
                     ((CourseDetailActivity)context).startActivityForResult(intent, CourseDetailActivity.ASSESSMENT_MOD_CODE);
                 }
             });
@@ -89,9 +84,9 @@ public class AssessmentAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     DeleteDialogFragment delete = new DeleteDialogFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("Assessment position",currentPos);
+                    bundle.putInt(DeleteDialogFragment.ITEM_POS,position);
                     delete.setArguments(bundle);
-                    delete.show(((TermDetailActivity)context).getSupportFragmentManager(),"Delete Assessment?");
+                    delete.show(((CourseDetailActivity)context).getSupportFragmentManager(),"Delete Assessment?");
                 }
 
             });
@@ -108,8 +103,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    // getItemCount() is called many times, and when it is first called,
-    // mWords has not been updated (means initially, it's null, and we can't return null).
+
     @Override
     public int getItemCount() {
         if (mAssessments != null)

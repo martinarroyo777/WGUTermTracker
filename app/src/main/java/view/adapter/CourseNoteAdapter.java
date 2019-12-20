@@ -12,13 +12,12 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.martinarroyo.termtracker.NoteDetailActivity;
-import com.martinarroyo.termtracker.R;
+import com.martinarroyo.wgutermtracker.NoteDetailActivity;
+import com.martinarroyo.wgutermtracker.R;
 
 import java.util.List;
 
-import logic.Note;
-import view.AddEditNote;
+import logic.entity.CourseNote;
 import view.DeleteDialogFragment;
 
 public class CourseNoteAdapter extends RecyclerView.Adapter {
@@ -39,7 +38,7 @@ public class CourseNoteAdapter extends RecyclerView.Adapter {
         }
     }
     private final LayoutInflater mInflater;
-    private List<Note> mNotes; // Cached copy of Notes
+    private List<CourseNote> mNotes; // Cached copy of Notes
     // Constructor for the Adapter -
     public CourseNoteAdapter(Context context){
         mInflater = LayoutInflater.from(context);
@@ -50,7 +49,7 @@ public class CourseNoteAdapter extends RecyclerView.Adapter {
 
     @Override
     public CourseNoteAdapter.CourseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.content_notedetail, parent, false);
+        View itemView = mInflater.inflate(R.layout.note_adapter_layout, parent, false);
         return new CourseNoteAdapter.CourseViewHolder(itemView);
     }
 
@@ -60,7 +59,7 @@ public class CourseNoteAdapter extends RecyclerView.Adapter {
 
         if (mNotes != null) {
             // Get an instance of the current item
-            final Note current = mNotes.get(position);
+            final CourseNote current = mNotes.get(position);
             final int currentPos = position;
             //Set up the data for each of the views
             holder1.mNoteTitleView.setText(current.getTitle());
@@ -71,11 +70,14 @@ public class CourseNoteAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(((NoteDetailActivity)context),current.toString(),Toast.LENGTH_SHORT).show();
+                    /*
                     Intent intent = new Intent(((NoteDetailActivity)context), AddEditNote.class);
                     intent.putExtra(AddEditNote.MOD_NOTE_ID,current.getId());
                     intent.putExtra(AddEditNote.MOD_NOTE_TITLE,current.getTitle());
                     intent.putExtra(AddEditNote.MOD_NOTE_BODY,current.getBody());
                     ((NoteDetailActivity)context).startActivityForResult(intent, NoteDetailActivity.NOTE_MOD_CODE);
+
+                     */
                 }
             });
             // Share Note
@@ -109,7 +111,7 @@ public class CourseNoteAdapter extends RecyclerView.Adapter {
         }
     }
     // set the data for our list
-    public void setNotes(List<Note> notes){
+    public void setNotes(List<CourseNote> notes){
         mNotes = notes;
         notifyDataSetChanged();
     }
