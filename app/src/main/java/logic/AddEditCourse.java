@@ -147,32 +147,35 @@ public class AddEditCourse extends AppCompatActivity implements AdapterView.OnIt
     /**
      * Functionality for the Save Button
      */
-    //TODO add data validation for fields
     private void save(){
+        boolean validDates = validStartEndDates(start, end);
+        if (validDates) {
+            this.title = courseTitle.getText().toString();
+            String courseStart = start.toString();
+            String courseEnd = end.toString();
+            String mentorName = courseMentorName.getText().toString();
+            String mentorEmail = courseMentorEmail.getText().toString();
+            String mentorPhone = courseMentorPhone.getText().toString();
+            Intent intent = new Intent();
+            if (update) {
+                course.setTitle(this.title);
+                course.setStartDate(courseStart);
+                course.setEndDate(courseEnd);
+                course.setMentor_name(mentorName);
+                course.setMentor_email(mentorEmail);
+                course.setMentor_phone(mentorPhone);
+                course.setStatus(status);
+                intent.putExtra(MOD_COURSE, course);
+            } else {
 
-        this.title = courseTitle.getText().toString();
-        String courseStart = start.toString();
-        String courseEnd = end.toString();
-        String mentorName = courseMentorName.getText().toString();
-        String mentorEmail = courseMentorEmail.getText().toString();
-        String mentorPhone = courseMentorPhone.getText().toString();
-        Intent intent = new Intent();
-        if (update){
-            course.setTitle(this.title);
-            course.setStartDate(courseStart);
-            course.setEndDate(courseEnd);
-            course.setMentor_name(mentorName);
-            course.setMentor_email(mentorEmail);
-            course.setMentor_phone(mentorPhone);
-            course.setStatus(status);
-            intent.putExtra(MOD_COURSE, course);
+                intent.putExtra(NEW_COURSE, new Course(term.getId(), this.title, mentorName, mentorEmail, mentorPhone,
+                        courseStart, courseEnd, status));
+            }
+            setResult(RESULT_OK, intent);
+            finish();
         } else {
-
-            intent.putExtra(NEW_COURSE,new Course(term.getId(),this.title,mentorName,mentorEmail,mentorPhone,
-                    courseStart,courseEnd,status));
+            Toast.makeText(this, "Invalid start and/or end dates. Please try again",Toast.LENGTH_SHORT).show();
         }
-        setResult(RESULT_OK,intent);
-        finish();
     }
 
     /**
@@ -197,7 +200,16 @@ public class AddEditCourse extends AppCompatActivity implements AdapterView.OnIt
         this.status = parent.getItemAtPosition(pos).toString();
     }
     public void onNothingSelected(AdapterView<?> parent){
-        // TODO figure out what we should have here
+        // DO NOTHING
+    }
 
+    /**
+     * Helper function to ensure start date is before or equal to end date
+     * @param start
+     * @param end
+     * @return True if start is before or equal to end date; false otherwise
+     */
+    private boolean validStartEndDates(LocalDate start, LocalDate end){
+        return start.isBefore(end) || start.isEqual(end);
     }
 }

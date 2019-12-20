@@ -19,10 +19,11 @@ import java.util.List;
 import logic.AddEditCourse;
 import logic.entity.Course;
 import logic.entity.Term;
+import view.DeleteDialogFragment;
 import view.adapter.CourseAdapter;
 import view.viewmodel.CourseViewModel;
 
-public class TermDetailActivity extends AppCompatActivity {
+public class TermDetailActivity extends AppCompatActivity implements DeleteDialogFragment.DeleteDialogListener{
     private Term term;
     public static final int COURSE_ADD_CODE = 4;
     public static final int COURSE_MOD_CODE = 5;
@@ -102,4 +103,19 @@ public class TermDetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gets the response from the delete dialog fragment
+     */
+    public void getResponse(int response, int position){
+        Course course = mCourseViewModel.get(position);
+        if (response == 0){
+            // Delete term from db
+            mCourseViewModel.delete(course);
+            Toast.makeText(this, "Course deleted successfully", Toast.LENGTH_SHORT).show();
+        }
+        else if (response == 1){
+            //Cancel deletion
+            Toast.makeText(this,"Canceled Course Deletion", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

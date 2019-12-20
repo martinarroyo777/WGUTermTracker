@@ -1,7 +1,11 @@
 package logic.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 /**
@@ -10,7 +14,7 @@ import androidx.room.PrimaryKey;
  * Assessments must be assigned to a Course
  */
 @Entity(tableName = "assessment")
-public class Assessment {
+public class Assessment implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -22,6 +26,18 @@ public class Assessment {
     private String type;
     @ColumnInfo(name = "dueDate")
     private String dueDate;
+    @Ignore
+    public static final Creator<Assessment> CREATOR = new Creator<Assessment>() {
+        @Override
+        public Assessment createFromParcel(Parcel parcel) {
+            return new Assessment(parcel);
+        }
+
+        @Override
+        public Assessment[] newArray(int i) {
+            return new Assessment[i];
+        }
+    };
 
     /**
      * Builds a standard Assessment without a notification. A course must already exist for this assessment to be assigned to using courseId.
@@ -37,6 +53,14 @@ public class Assessment {
         this.dueDate = dueDate;
     }
 
+    @Ignore
+    protected Assessment(Parcel in){
+        this.id = in.readInt();
+        this.courseId = in.readInt();
+        this.title = in.readString();
+        this.type = in.readString();
+        this.dueDate = in.readString();
+    };
 
     /**
      * Returns the unique id for the Assessment
@@ -116,5 +140,19 @@ public class Assessment {
      */
     public void setDueDate(String dueDate){
         this.dueDate = dueDate;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(this.id);
+        parcel.writeInt(this.courseId);
+        parcel.writeString(this.title);
+        parcel.writeString(this.type);
+        parcel.writeString(this.dueDate);
     }
 }
