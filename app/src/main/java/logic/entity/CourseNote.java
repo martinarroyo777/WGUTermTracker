@@ -1,14 +1,18 @@
 package logic.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 /**
  * Represents a single CourseNote. CourseNotes are associated with Courses.
  */
 @Entity(tableName = "course_note")
-public class CourseNote {
+public class CourseNote implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name = "courseId")
@@ -17,6 +21,18 @@ public class CourseNote {
     private String title;
     @ColumnInfo(name = "body")
     private String body;
+    @Ignore
+    public static final Creator<CourseNote> CREATOR = new Creator<CourseNote>() {
+        @Override
+        public CourseNote createFromParcel(Parcel parcel) {
+            return new CourseNote(parcel);
+        }
+
+        @Override
+        public CourseNote[] newArray(int i) {
+            return new CourseNote[i];
+        }
+    };
 
     /**
      * Complete constructor for Note object
@@ -28,6 +44,22 @@ public class CourseNote {
         this.courseId = courseId;
         this.title = title;
         this.body = body;
+    }
+
+    @Ignore
+    protected CourseNote(Parcel in){
+        this.id = in.readInt();
+        this.courseId = in.readInt();
+        this.title = in.readString();
+        this.body = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(this.id);
+        parcel.writeInt(this.courseId);
+        parcel.writeString(this.title);
+        parcel.writeString(this.body);
     }
 
     /**
@@ -93,4 +125,11 @@ public class CourseNote {
     public void setBody(String body){
         this.body = body;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
 }
