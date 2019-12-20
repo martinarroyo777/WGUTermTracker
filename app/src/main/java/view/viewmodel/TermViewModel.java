@@ -10,7 +10,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import logic.entity.Course;
+import database.join.TermWithCourses;
 import logic.entity.Term;
 import logic.repository.TermRepository;
 
@@ -21,13 +21,13 @@ public class TermViewModel extends AndroidViewModel {
     // Get our LiveData for caching
     private LiveData<List<Term>> mAllTerms;
     // List of courses by term
-    private List<Course> mAllCourses;
+    private LiveData<List<TermWithCourses>> mTermsWithCourses;
     // Constructor - initialize member variables
     public TermViewModel(Application application){
         super(application);
         mTermRepository = new TermRepository(application);
         mAllTerms = mTermRepository.getAllTerms();
-        mAllCourses = null;
+        mTermsWithCourses = mTermRepository.getCoursesByTerm();
     }
 // Create getter for data cache
     public LiveData<List<Term>> getAllTerms(){
@@ -49,13 +49,10 @@ public class TermViewModel extends AndroidViewModel {
     public void update(Term term){
         mTermRepository.update(term);
     }
-    // Checks to see if there are courses associated with the given term
-    public boolean hasCourses(int termId){
-        getCoursesByTerm(termId);
-        return this.mAllCourses != null;
+    // Getter for terms with courses
+    public LiveData<List<TermWithCourses>> getTermsWithCourses(){
+        return this.mTermsWithCourses;
     }
-    public List<Course> getCoursesByTerm(int termId){
-        this.mAllCourses = mTermRepository.getCoursesByTerm(termId);
-        return this.mAllCourses;
-    }
+
+
 }

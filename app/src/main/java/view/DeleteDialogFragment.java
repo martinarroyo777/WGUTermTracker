@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.fragment.app.DialogFragment;
 
 import com.martinarroyo.wgutermtracker.R;
+import com.martinarroyo.wgutermtracker.TermMainActivity;
 
 
 public class DeleteDialogFragment extends DialogFragment {
@@ -37,7 +38,7 @@ public class DeleteDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //TODO insert logic to check if term can be deleted and execute
-                        Intent intent = new Intent(getActivity(), getActivity().getClass());
+                        Intent intent = new Intent(getActivity(), TermMainActivity.class);
                         // Send confirmation to delete term
                         listener.getResponse(DELETE_CONFIRM_CODE, itemPosition);
                         startActivity(intent);
@@ -47,7 +48,7 @@ public class DeleteDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         listener.getResponse(DELETE_CANCEL_CODE, itemPosition);
-                        Intent intent = new Intent(getActivity(), getActivity().getClass());
+                        Intent intent = new Intent(getActivity(), TermMainActivity.class);
                         startActivity(intent);
                     }
                 })

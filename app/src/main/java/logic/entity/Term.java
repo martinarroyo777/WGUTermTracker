@@ -11,6 +11,8 @@ import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
 
+import database.join.TermWithCourses;
+
 /**
  * Represents a Term. Each term has Courses associated with it.
  */
@@ -49,6 +51,7 @@ public class Term implements Parcelable {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.courses = this.getCourseList();
     }
 
     @Ignore
@@ -132,7 +135,13 @@ public class Term implements Parcelable {
         this.endDate = end;
     }
 
-
+    // Sets courses to term
+    public void setCourses(TermWithCourses termWithCourses){
+        this.courses = (ArrayList) termWithCourses.courses;
+    }
+    public ArrayList<Course> getCourseList(){
+        return this.courses;
+    }
     @Override
     public String toString(){
         StringBuilder res = new StringBuilder();

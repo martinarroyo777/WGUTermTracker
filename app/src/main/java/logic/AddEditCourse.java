@@ -42,27 +42,8 @@ public class AddEditCourse extends AppCompatActivity implements AdapterView.OnIt
     EditText courseMentorEmail;
     EditText courseMentorPhone;
     String title;
-    /*
-    public static final String NEW_COURSE_TITLE = "New Title";
-    public static final String NEWCOURSEMENTOR_NAME = "Mentor Name";
-    public static final String NEWCOURSEMENTOR_PHONE = "Mentor Phone";
-    public static final String NEWCOURSEMENTOR_EMAIL = "Mentor Email";
-    public static final String NEW_COURSE_START = "New Start";
-    public static final String NEW_COURSE_END = "New End";
-    public static final String NEW_COURSE_STATUS = "New Status";
-     */
     public static final String NEW_COURSE = "New Course";
     public static final String MOD_COURSE = "Modify Course";
-    /*
-    public static final String MOD_COURSE_ID = "Mod ID";
-    public static final String MOD_COURSE_TITLE = "Mod Title";
-    public static final String MODCOURSEMENTOR_NAME = "Mentor Name";
-    public static final String MODCOURSEMENTOR_PHONE = "Mentor Phone";
-    public static final String MODCOURSEMENTOR_EMAIL = "Mentor Email";
-    public static final String MOD_COURSE_START = "Mod Start";
-    public static final String MOD_COURSE_END = "Mod End";
-    public static final String MOD_COURSE_STATUS = "Mod Status";
-     */
     boolean update = false;
 
     @Override
@@ -187,15 +168,6 @@ public class AddEditCourse extends AppCompatActivity implements AdapterView.OnIt
             intent.putExtra(MOD_COURSE, course);
         } else {
 
-            /*
-            intent.putExtra(NEW_COURSE_TITLE,this.title);
-            intent.putExtra(MODCOURSEMENTOR_NAME,mentorName);
-            intent.putExtra(MODCOURSEMENTOR_EMAIL,mentorEmail);
-            intent.putExtra(MODCOURSEMENTOR_PHONE,mentorPhone);
-            intent.putExtra(NEW_COURSE_START,courseStart);
-            intent.putExtra(NEW_COURSE_END,courseEnd);
-            intent.putExtra(NEW_COURSE_STATUS,status);
-             */
             intent.putExtra(NEW_COURSE,new Course(term.getId(),this.title,mentorName,mentorEmail,mentorPhone,
                     courseStart,courseEnd,status));
         }

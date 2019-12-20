@@ -9,7 +9,7 @@ import java.util.List;
 
 import database.Database;
 import database.dao.TermDAO;
-import logic.entity.Course;
+import database.join.TermWithCourses;
 import logic.entity.Term;
 
 
@@ -17,12 +17,14 @@ public class TermRepository {
     // Get the DAO
     private TermDAO mTermDAO;
     private LiveData<List<Term>> mAllTerms;
-    private List<Course> mCoursesByTerm;
+    private LiveData<List<TermWithCourses>> mTermsWithCourses;
+
     public TermRepository(Application application){
         // Get a handle to the DB and initialize member variables
         Database db = Database.getDatabase(application);
         mTermDAO = db.termDAO();
         mAllTerms = mTermDAO.getTerms();
+        mTermsWithCourses = mTermDAO.getTermsWithCourses();
     }
 
     /**
@@ -32,10 +34,7 @@ public class TermRepository {
     public LiveData<List<Term>> getAllTerms(){
         return mAllTerms;
     }
-    public List<Course> getCoursesByTerm(int termId){
-        mCoursesByTerm = mTermDAO.getCourses(termId);
-        return mCoursesByTerm;
-    }
+    public LiveData<List<TermWithCourses>> getCoursesByTerm(){return mTermsWithCourses;}
 
     // Insert method done asynchronously
     public void insert(Term term){

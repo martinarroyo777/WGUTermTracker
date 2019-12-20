@@ -85,17 +85,7 @@ public class TermDetailActivity extends AppCompatActivity {
         }
         // UPDATE Course
         else if (requestCode == COURSE_MOD_CODE && resultCode == RESULT_OK) {
-            /*
-            String courseTitle = data.getStringExtra(AddEditCourse.MOD_COURSE_TITLE);
-            String courseMentorName = data.getStringExtra(AddEditCourse.MODCOURSEMENTOR_NAME);
-            String courseMentorEmail = data.getStringExtra(AddEditCourse.MODCOURSEMENTOR_EMAIL);
-            String courseMentorPhone = data.getStringExtra(AddEditCourse.MODCOURSEMENTOR_PHONE);
-            String startDate = data.getStringExtra(AddEditCourse.MOD_COURSE_START);
-            String endDate = data.getStringExtra(AddEditCourse.MOD_COURSE_END);
-            String status = data.getStringExtra(AddEditCourse.MOD_COURSE_STATUS);
-            int id = data.getIntExtra(AddEditCourse.MOD_COURSE_ID,-1);
 
-             */
             // Inflate course
             Course course = data.getParcelableExtra(AddEditCourse.MOD_COURSE);
             mCourseViewModel.update(course);
@@ -111,28 +101,5 @@ public class TermDetailActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
     }
-    /* ---- REMOVAL PENDING -------------------------
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-     */
 }

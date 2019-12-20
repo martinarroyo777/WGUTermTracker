@@ -63,7 +63,6 @@ public class TermAdapter extends RecyclerView.Adapter {
         if (mTerms != null) {
             // Get an instance of the current item
             final Term current = mTerms.get(position);
-            currentPosition = position;
             //Set up the data for each of the views
             holder1.termTitleView.setText(current.getTitle());
             holder1.termDatesView.setText(current.getStartDate() + " - " + current.getEndDate());
@@ -93,7 +92,7 @@ public class TermAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     DeleteDialogFragment delete = new DeleteDialogFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("Term Position",currentPosition);
+                    bundle.putInt("Term Position",position);
                     delete.setArguments(bundle);
                     delete.show(((TermMainActivity)context).getSupportFragmentManager(),"Delete Term?");
                 }
