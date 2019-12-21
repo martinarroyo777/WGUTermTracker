@@ -3,6 +3,7 @@
     package="com.martinarroyo.wgutermtracker">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -26,6 +27,7 @@
         <activity android:name=".NoteDetailActivity"></activity>
         <activity android:name="logic.AddEditAssessment"></activity>
         <activity android:name="logic.AddEditCourseNote"></activity>
+        <receiver android:name=".AppBroadcastReceiver"></receiver>
     </application>
 
 </manifest>

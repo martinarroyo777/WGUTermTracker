@@ -9,7 +9,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.martinarroyo.wgutermtracker.CourseDetailActivity;
 import com.martinarroyo.wgutermtracker.R;
+
+import logic.entity.Course;
+import logic.entity.CourseNote;
 
 
 public class AddEditCourseNote extends AppCompatActivity {
@@ -21,20 +25,18 @@ public class AddEditCourseNote extends AppCompatActivity {
     String title;
     StringBuilder body;
 
-    public static final String NEW_NOTE_TITLE = "New Title";
-    public static final String NEW_NOTE_BODY = "New Body";
-    public static final String MOD_NOTE_TITLE = "Mod Title";
-    public static final String MOD_NOTE_BODY = "Mod Body";
-    public static final String MOD_NOTE_ID = "Mod Note ID";
+    public static final String NEW_NOTE = "New Note";
+    public static final String MOD_NOTE = "Modify Note";
 
-    private int courseId;
+    Course course;
+    CourseNote note;
     boolean update = false;
 
     @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
         setContentView(R.layout.add_note_dialog);
-        courseId = 1;//getIntent().getIntExtra(CourseDetailActivity.COURSEDETAIL_ID,-1);
+        course = getIntent().getParcelableExtra(CourseDetailActivity.COURSE_DETAIL);
         // Initialize views and buttons
         mNoteTitle = (EditText) findViewById(R.id.addnote_title);
         mNoteBody = (EditText) findViewById(R.id.addnote_body);
@@ -43,11 +45,12 @@ public class AddEditCourseNote extends AppCompatActivity {
         body = new StringBuilder();
         // If there is an intent extra, set up the fields to reflect that
         Intent modIntent = getIntent();
-        if (modIntent.hasExtra(MOD_NOTE_ID)){
+        if (modIntent.hasExtra(MOD_NOTE)){
             update = true;
             this.setTitle("Edit Note"); // Change title of screen if we are updating
-            mNoteTitle.setText(modIntent.getStringExtra(MOD_NOTE_TITLE));
-            mNoteBody.setText(modIntent.getStringExtra(MOD_NOTE_BODY));
+            note = modIntent.getParcelableExtra(MOD_NOTE);
+            mNoteTitle.setText(note.getTitle());
+            mNoteBody.setText(note.getBody());
         }
 
         // Register action listeners
@@ -83,20 +86,15 @@ public class AddEditCourseNote extends AppCompatActivity {
      * Functionality for the Save Button
      */
     private void save(){
-
         this.title = mNoteTitle.getText().toString();
         this.body.append(mNoteBody.getText().toString());
         Intent intent = new Intent();
-        // Always add the term id
-        //intent.putExtra(CourseDetailActivity.COURSEDETAIL_ID,courseId);
         if (update){
-            intent.putExtra(MOD_NOTE_TITLE,this.title);
-            intent.putExtra(MOD_NOTE_BODY,this.body.toString());
-            int id = getIntent().getIntExtra(MOD_NOTE_ID,-1);
-            intent.putExtra(MOD_NOTE_ID,id);
+            note.setTitle(this.title);
+            note.setBody(this.body.toString());
+            intent.putExtra(MOD_NOTE,note);
         } else {
-            intent.putExtra(NEW_NOTE_TITLE,this.title);
-            intent.putExtra(NEW_NOTE_BODY,this.body.toString());
+            intent.putExtra(NEW_NOTE,new CourseNote(course.getId(),this.title,this.body.toString()));
         }
         setResult(RESULT_OK,intent);
         finish();

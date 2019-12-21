@@ -1,5 +1,7 @@
 package com.martinarroyo.wgutermtracker;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,23 +36,30 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
     public static final String COURSE_DETAIL = "Course Detail";
     RecyclerView recyclerView;
     Course course; // The current course
+    private NotificationManagerCompat notificationManager;
+    AlarmManager alarmManager;
+    PendingIntent pendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.course_detail_layout);
+        notificationManager = NotificationManagerCompat.from(this);
         /*
             Set up Course details
          */
         TextView mCourseTitle = findViewById(R.id.coursedetail_title);
-        TextView mCourseStartDate = findViewById(R.id.coursedetail_startdate);
-        TextView mCourseEndDate = findViewById(R.id.coursedetail_enddate);
+        final TextView mCourseStartDate = findViewById(R.id.coursedetail_startdate);
+        final TextView mCourseEndDate = findViewById(R.id.coursedetail_enddate);
         TextView mCourseStatus = findViewById(R.id.coursedetail_status);
         TextView mCourseMentorName = findViewById(R.id.coursedetail_mentorname);
         TextView mCourseMentorEmail = findViewById(R.id.coursedetail_mentoremail);
         TextView mCourseMentorPhone = findViewById(R.id.coursedetail_phone);
         Button mViewNotes = findViewById(R.id.coursedetail_notes);
+        Button mStartNotification = findViewById(R.id.coursedetail_start_notification);
+        Button mEndNotification = findViewById(R.id.coursedetail_end_notification);
         Intent courseDetail = getIntent();
+
         if (courseDetail.hasExtra(COURSE_DETAIL)){
             course = courseDetail.getParcelableExtra(COURSE_DETAIL);
             mCourseTitle.setText(course.getTitle());
@@ -61,12 +71,27 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
             mCourseMentorPhone.setText(course.getMentor_phone());
 
         }
-
+        mStartNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                Intent intent = new Intent(getApplicationContext(),AppBroadcastReceiver.class);
+                pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),101,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),pendingIntent);
+                Toast.makeText(getApplicationContext(),"You set an alarm for the start date: " + mCourseStartDate.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        mEndNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"You set an alarm for the end date: " + mCourseEndDate.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
         mViewNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CourseDetailActivity.this,NoteDetailActivity.class);
-                //intent.putExtra(NoteDetailActivity.COURSEDETAIL_ID,courseId);
+                intent.putExtra(NoteDetailActivity.COURSE_DETAIL,course);
                 startActivity(intent);
             }
         });

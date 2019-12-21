@@ -17,6 +17,7 @@ import com.martinarroyo.wgutermtracker.R;
 
 import java.util.List;
 
+import logic.AddEditCourseNote;
 import logic.entity.CourseNote;
 import view.DeleteDialogFragment;
 
@@ -70,14 +71,9 @@ public class CourseNoteAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(((NoteDetailActivity)context),current.toString(),Toast.LENGTH_SHORT).show();
-                    /*
-                    Intent intent = new Intent(((NoteDetailActivity)context), AddEditNote.class);
-                    intent.putExtra(AddEditNote.MOD_NOTE_ID,current.getId());
-                    intent.putExtra(AddEditNote.MOD_NOTE_TITLE,current.getTitle());
-                    intent.putExtra(AddEditNote.MOD_NOTE_BODY,current.getBody());
+                    Intent intent = new Intent(((NoteDetailActivity)context), AddEditCourseNote.class);
+                    intent.putExtra(AddEditCourseNote.MOD_NOTE,current);
                     ((NoteDetailActivity)context).startActivityForResult(intent, NoteDetailActivity.NOTE_MOD_CODE);
-
-                     */
                 }
             });
             // Share Note
@@ -98,7 +94,7 @@ public class CourseNoteAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     DeleteDialogFragment delete = new DeleteDialogFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("Note position",currentPos);
+                    bundle.putInt(DeleteDialogFragment.ITEM_POS,currentPos);
                     delete.setArguments(bundle);
                     delete.show(((NoteDetailActivity)context).getSupportFragmentManager(),"Delete Note?");
                 }
