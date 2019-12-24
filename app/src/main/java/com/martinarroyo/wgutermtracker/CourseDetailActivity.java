@@ -81,8 +81,10 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
                 long startMillis = getDateMillis(course.getStartDate());
                 alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 Intent intent = new Intent(getApplicationContext(), AppBroadcastReceiver.class);
+                intent.putExtra("COURSE START", "Your Course Begins Today!");
+                intent.putExtra("COURSE START MESSAGE", course.getTitle() + " begins today! Good luck!");
                 pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),101,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, startMillis,pendingIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, startMillis,pendingIntent);
                 Toast.makeText(getApplicationContext(),"You set an alarm for the start date: " + mCourseStartDate.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });

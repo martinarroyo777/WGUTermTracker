@@ -9,6 +9,8 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
+import com.martinarroyo.wgutermtracker.R;
+
 public class NotificationHelper extends ContextWrapper {
 
     public static final String channelID = "channelID";
@@ -38,10 +40,12 @@ public class NotificationHelper extends ContextWrapper {
         return mManager;
     }
 
-    public NotificationCompat.Builder getChannelNotification() {
+    public NotificationCompat.Builder getChannelNotification(String title, String message) {
+
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
-                .setContentTitle("Alarm!")
-                .setContentText("Your AlarmManager is working.");
+                .setContentTitle(title)
+                .setContentText(message)
+                .setSmallIcon(R.drawable.ic_alert_icon);
                // .setSmallIcon(R.drawable.ic_android);
     }
 }
