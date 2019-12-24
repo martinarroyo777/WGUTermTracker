@@ -1,4 +1,4 @@
-package com.martinarroyo.wgutermtracker;
+package com.martinarroyo.wgutermtracker.notification;
 
 import android.app.Application;
 import android.app.NotificationChannel;

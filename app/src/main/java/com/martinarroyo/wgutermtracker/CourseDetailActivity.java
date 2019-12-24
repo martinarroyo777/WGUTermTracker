@@ -17,7 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.martinarroyo.wgutermtracker.notification.AppBroadcastReceiver;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import logic.AddEditAssessment;
@@ -74,17 +78,18 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
         mStartNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                long startMillis = getDateMillis(course.getStartDate());
                 alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                Intent intent = new Intent(getApplicationContext(),AppBroadcastReceiver.class);
+                Intent intent = new Intent(getApplicationContext(), AppBroadcastReceiver.class);
                 pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),101,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),pendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, startMillis,pendingIntent);
                 Toast.makeText(getApplicationContext(),"You set an alarm for the start date: " + mCourseStartDate.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
         mEndNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"You set an alarm for the end date: " + mCourseEndDate.getText().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"You set an alarm for the end date: " + course.getStartDate(), Toast.LENGTH_SHORT).show();
             }
         });
         mViewNotes.setOnClickListener(new View.OnClickListener() {
@@ -169,6 +174,16 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
         }
     }
 
-
+    /**
+     * Helper function to convert date to millis
+     * @param date
+     * @return given date in milliseconds from epoch
+     */
+    public long getDateMillis(String date){
+        LocalDate dateStart = LocalDate.parse(date);
+        LocalDateTime dateWithTime = dateStart.atStartOfDay();
+        long startMillis = dateWithTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        return startMillis;
+    }
 
 }
