@@ -13,21 +13,21 @@ import com.martinarroyo.wgutermtracker.R;
 
 public class NotificationHelper extends ContextWrapper {
 
-    public static final String channelID = "channelID";
-    public static final String channelName = "Channel Name";
+    //public static final String channelID = "channelID";
+    //public static final String channelName = "Channel Name";
 
     private NotificationManager mManager;
 
-    public NotificationHelper(Context base) {
+    public NotificationHelper(Context base, String channelId, String channelName) {
         super(base);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannel();
+            createChannel(channelId,channelName);
         }
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    private void createChannel() {
-        NotificationChannel channel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
+    private void createChannel(String channelId, String channelName) {
+        NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
 
         getManager().createNotificationChannel(channel);
     }
@@ -40,12 +40,11 @@ public class NotificationHelper extends ContextWrapper {
         return mManager;
     }
 
-    public NotificationCompat.Builder getChannelNotification(String title, String message) {
+    public NotificationCompat.Builder getChannelNotification(String title, String message, String channelId) {
 
-        return new NotificationCompat.Builder(getApplicationContext(), channelID)
+        return new NotificationCompat.Builder(getApplicationContext(), channelId)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setSmallIcon(R.drawable.ic_alert_icon);
-               // .setSmallIcon(R.drawable.ic_android);
     }
 }

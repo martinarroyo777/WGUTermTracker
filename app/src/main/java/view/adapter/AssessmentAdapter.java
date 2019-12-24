@@ -11,12 +11,12 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.martinarroyo.wgutermtracker.AssessmentDetailActivity;
 import com.martinarroyo.wgutermtracker.CourseDetailActivity;
 import com.martinarroyo.wgutermtracker.R;
 
 import java.util.List;
 
-import logic.AddEditAssessment;
 import logic.entity.Assessment;
 import view.DeleteDialogFragment;
 
@@ -68,13 +68,18 @@ public class AssessmentAdapter extends RecyclerView.Adapter {
             holder1.mAssessmentTypeView.setText(current.getType());
             // Set up button actions
             // View Assessment details
-            // Set on click listener for adapter - Modify Assessment
+            // Set on click listener for adapter - View Assessment Detail
             holder1.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    /* DONT DELETE - CODE FOR MOD ASSESSMENT
                     Intent intent = new Intent(((CourseDetailActivity)context), AddEditAssessment.class);
                     intent.putExtra(AddEditAssessment.MOD_ASSESSMENT,current);
                     ((CourseDetailActivity)context).startActivityForResult(intent, CourseDetailActivity.ASSESSMENT_MOD_CODE);
+                     */
+                    Intent intent = new Intent((CourseDetailActivity)context,AssessmentDetailActivity.class);
+                    intent.putExtra(AssessmentDetailActivity.ASSESSMENT_DETAIL,current);
+                    ((CourseDetailActivity)context).startActivityForResult(intent,AssessmentDetailActivity.ASSESSMENT_DETAIL_CODE);
                 }
             });
 

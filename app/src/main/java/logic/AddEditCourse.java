@@ -146,10 +146,13 @@ public class AddEditCourse extends AppCompatActivity implements AdapterView.OnIt
 
     /**
      * Functionality for the Save Button
+     *
+     * Allow creation of course if the dates are valid - must fall within the given term
      */
     private void save(){
         boolean validDates = validStartEndDates(start, end);
-        if (validDates) {
+        boolean withinTerm = withinTerm(start,end);
+        if (validDates && withinTerm) {
             this.title = courseTitle.getText().toString();
             String courseStart = start.toString();
             String courseEnd = end.toString();
@@ -174,7 +177,12 @@ public class AddEditCourse extends AppCompatActivity implements AdapterView.OnIt
             setResult(RESULT_OK, intent);
             finish();
         } else {
-            Toast.makeText(this, "Invalid start and/or end dates. Please try again",Toast.LENGTH_SHORT).show();
+            if (!validDates){
+                Toast.makeText(this, "Invalid start and/or end dates. Please try again",Toast.LENGTH_SHORT).show();
+            }
+            if (!withinTerm){
+                Toast.makeText(this, "Course start/end dates must be within the given term start/end dates. Please try again",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -211,5 +219,15 @@ public class AddEditCourse extends AppCompatActivity implements AdapterView.OnIt
      */
     private boolean validStartEndDates(LocalDate start, LocalDate end){
         return start.isBefore(end) || start.isEqual(end);
+    }
+
+    private boolean withinTerm(LocalDate start, LocalDate end){
+        //Get term start and end dates
+        LocalDate termStart = LocalDate.parse(this.term.getStartDate());
+        LocalDate termEnd = LocalDate.parse(this.term.getEndDate());
+        // check if start of course is within term
+        boolean startOk = (start.equals(termStart) || start.isAfter(termStart)) && (start.isBefore(termEnd) || start.equals(termEnd));
+        boolean endOk = (end.equals(termEnd) || end.isBefore(termEnd));
+        return startOk && endOk;
     }
 }

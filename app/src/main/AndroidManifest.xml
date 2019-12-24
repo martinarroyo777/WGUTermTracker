@@ -27,6 +27,7 @@
         <activity android:name=".NoteDetailActivity"></activity>
         <activity android:name="logic.AddEditAssessment"></activity>
         <activity android:name="logic.AddEditCourseNote"></activity>
+        <activity android:name=".AssessmentDetailActivity"></activity>
         <receiver android:name=".notification.AppBroadcastReceiver"></receiver>
     </application>
 

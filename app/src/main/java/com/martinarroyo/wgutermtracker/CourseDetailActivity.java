@@ -37,6 +37,12 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
     private AssessmentViewModel mAssessmentViewModel; // Instance member for Course ViewModel
     public static final int ASSESSMENT_ADD_CODE = 7;
     public static final int ASSESSMENT_MOD_CODE = 8;
+    public static final int COURSE_START_ID = 13;
+    public static final int COURSE_END_ID = 14;
+    public static final String COURSE_START_CHANNEL_ID = "Course Start Channel";
+    public static final String COURSE_END_CHANNEL_ID = "Course End Channel";
+    public static final String COURSE_START_CHANNEL_NAME = "Course Start Channel Name";
+    public static final String COURSE_END_CHANNEL_NAME = "Course End Channel Name";
     public static final String COURSE_DETAIL = "Course Detail";
     RecyclerView recyclerView;
     Course course; // The current course
@@ -80,17 +86,19 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
             public void onClick(View view) {
                 long startMillis = getDateMillis(course.getStartDate());
                 alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                Intent intent = new Intent(getApplicationContext(), AppBroadcastReceiver.class);
-                intent.putExtra("COURSE START", "Your Course Begins Today!");
-                intent.putExtra("COURSE START MESSAGE", course.getTitle() + " begins today! Good luck!");
-                pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),101,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, startMillis,pendingIntent);
+                createNotification(startMillis,"Your Course Begins Today!", course.getTitle() + " begins today! Good luck!",
+                                        COURSE_START_ID, COURSE_START_CHANNEL_ID, COURSE_START_CHANNEL_NAME);
                 Toast.makeText(getApplicationContext(),"You set an alarm for the start date: " + mCourseStartDate.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
         mEndNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                long endMillis = getDateMillis(course.getEndDate());
+                alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                createNotification(endMillis,"Your Course Ends Today!",
+                                                course.getTitle() + " ends today!",
+                                                COURSE_END_ID, COURSE_END_CHANNEL_ID, COURSE_END_CHANNEL_NAME);
                 Toast.makeText(getApplicationContext(),"You set an alarm for the end date: " + course.getStartDate(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -188,4 +196,15 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
         return startMillis;
     }
 
+    private void createNotification(long date, String title, String message, int notificationId, String channelId, String channelName){
+        Intent intent = new Intent(getApplicationContext(), AppBroadcastReceiver.class);
+        intent.putExtra(AppBroadcastReceiver.NOTIFICATION_TITLE, title);
+        intent.putExtra(AppBroadcastReceiver.NOTIFICATION_MESSAGE, message);
+        intent.putExtra(AppBroadcastReceiver.NOTIFICATION_ID,notificationId);
+        intent.putExtra(AppBroadcastReceiver.NOTIFICATION_CHANNEL_ID,channelId);
+        intent.putExtra(AppBroadcastReceiver.NOTIFICATION_CHANNEL_NAME,channelName);
+        int requestCode = notificationId == COURSE_START_ID ? 101 : 102; // Create a different intent depending on whether we are starting or ending a course
+        this.pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),requestCode,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        this.alarmManager.setExact(AlarmManager.RTC_WAKEUP, date,pendingIntent);
+    }
 }

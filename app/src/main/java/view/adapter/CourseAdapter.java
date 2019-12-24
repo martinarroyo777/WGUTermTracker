@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.martinarroyo.wgutermtracker.CourseDetailActivity;
+import com.martinarroyo.wgutermtracker.NoteDetailActivity;
 import com.martinarroyo.wgutermtracker.R;
 import com.martinarroyo.wgutermtracker.TermDetailActivity;
 
@@ -89,6 +90,7 @@ public class CourseAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(((TermDetailActivity)context), AddEditCourse.class);
                     intent.putExtra(AddEditCourse.MOD_COURSE,current);
+                    intent.putExtra("Term",TermDetailActivity.term);
                     ((TermDetailActivity)context).startActivityForResult(intent, TermDetailActivity.COURSE_MOD_CODE);
                 }
             });
@@ -96,11 +98,10 @@ public class CourseAdapter extends RecyclerView.Adapter {
             holder1.viewNotes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO need to create new activity to show course notes
-                   // Intent intent = new Intent(((TermDetailActivity)context), NoteDetailActivity.class);
-                   // intent.putExtra(NoteDetailActivity.COURSEDETAIL_ID,current.getId());
-                   // ((TermDetailActivity)context).startActivityForResult(intent, NoteDetailActivity.NOTE_MOD_CODE);
-                    Toast.makeText(context,"Pressed View Course Notes Button", Toast.LENGTH_SHORT).show();
+                   Intent intent = new Intent(((TermDetailActivity)context), NoteDetailActivity.class);
+                   intent.putExtra(NoteDetailActivity.COURSE_DETAIL,current);
+                   ((TermDetailActivity)context).startActivityForResult(intent, NoteDetailActivity.NOTE_MOD_CODE);
+                    //Toast.makeText(context,"Pressed View Course Notes Button", Toast.LENGTH_SHORT).show();
                 }
 
             });
