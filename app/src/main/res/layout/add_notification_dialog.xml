@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:layout_marginTop="150dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp">
+
+    <EditText
+        android:id="@+id/addnotification_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Notification Title"
+        android:inputType="text"
+        android:padding="5dp"/>
+
+    <EditText
+        android:id="@+id/addnotification_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:ems="10"
+        android:padding="5dp"
+        android:hint="@string/note_body"
+        android:inputType="textMultiLine" />
+    <TextView
+        android:id="@+id/notification_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:ems="10"
+        android:hint="Due Date"
+        android:importantForAutofill="no"
+        />
+
+    <LinearLayout
+        android:id="@+id/addnotification_buttonholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp">
+
+        <Button
+            android:id="@+id/addnotification_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="25dp"
+            android:text="@string/addmodterm_cancel" />
+
+        <Button
+            android:id="@+id/addnotification_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addmodterm_save" />
+    </LinearLayout>
+
+
+</LinearLayout>

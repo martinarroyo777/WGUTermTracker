@@ -7,16 +7,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.List;
+
+import logic.AddEditNotification;
 import logic.entity.Assessment;
-import logic.entity.Course;
+import logic.entity.AssessmentNotification;
 import view.DeleteDialogFragment;
-import view.adapter.CourseAdapter;
-import view.viewmodel.CourseViewModel;
+import view.adapter.NotificationAdapter;
+import view.viewmodel.NotificationViewModel;
 
 public class AssessmentDetailActivity extends AppCompatActivity implements DeleteDialogFragment.DeleteDialogListener{
     public static Assessment assessment;
@@ -24,9 +29,9 @@ public class AssessmentDetailActivity extends AppCompatActivity implements Delet
     public static final int NOTIFICATION_MOD_CODE = 22;
     public static final int ASSESSMENT_DETAIL_CODE = 20;
     public static final String ASSESSMENT_DETAIL = "Assessment Detail";
-    CourseAdapter adapter;
+    NotificationAdapter adapter;
     RecyclerView recyclerView;
-    CourseViewModel mCourseViewModel;
+    NotificationViewModel mNotificationViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,30 +51,26 @@ public class AssessmentDetailActivity extends AppCompatActivity implements Delet
 
         // Set up our recycler view
         recyclerView = findViewById(R.id.assessmentdetail_recycleview);
-        adapter = new CourseAdapter(this);
+        adapter = new NotificationAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        /* TODO Create view model for notifications
-        mCourseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);        // Add an observer for the LiveData object
-        mCourseViewModel.getAllCourses(term.getId()).observe(this, new Observer<List<Course>>() {
+        mNotificationViewModel = new ViewModelProvider(this).get(NotificationViewModel.class);        // Add an observer for the LiveData object
+        mNotificationViewModel.getAllNotifications(assessment.getId()).observe(this, new Observer<List<AssessmentNotification>>() {
             @Override
-            public void onChanged(List<Course> courses) {
-                adapter.setCourses(courses);
+            public void onChanged(List<AssessmentNotification> notifications) {
+                adapter.setNotifications(notifications);
             }
         });
 
-         */
-        FloatingActionButton fab = findViewById(R.id.fab_addcourse);
+        FloatingActionButton fab = findViewById(R.id.fab_addnotification);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                    Intent intent = new Intent(getApplicationContext(), AddEditCourse.class);
-                    intent.putExtra("Term",term);
-                    startActivityForResult(intent,COURSE_ADD_CODE);
 
-                 */
-                Toast.makeText(getApplicationContext(),"Clicked addNotification button",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), AddEditNotification.class);
+                    intent.putExtra("assessment",assessment);
+                    startActivityForResult(intent,NOTIFICATION_ADD_CODE);
+                //Toast.makeText(getApplicationContext(),"Clicked addNotification button",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -79,16 +80,16 @@ public class AssessmentDetailActivity extends AppCompatActivity implements Delet
         super.onActivityResult(requestCode, resultCode, data);
         // INSERT Notification
         if (requestCode == NOTIFICATION_ADD_CODE && resultCode == RESULT_OK) {
-            // Inflate our course
-            //Course course = data.getParcelableExtra(AddEditCourse.NEW_COURSE);
-            //mCourseViewModel.insert(course);
+            // Inflate our notification
+            AssessmentNotification notification = data.getParcelableExtra(AddEditNotification.NEW_NOTIFICATION);
+            mNotificationViewModel.insert(notification);
             Toast.makeText(this, "Notification Added Successfully", Toast.LENGTH_SHORT).show();
         }
         // UPDATE Notification
         else if (requestCode == NOTIFICATION_MOD_CODE && resultCode == RESULT_OK) {
-            // Inflate course
-            //Course course = data.getParcelableExtra(AddEditCourse.MOD_COURSE);
-            //mCourseViewModel.update(course);
+            // Inflate notification
+            AssessmentNotification notification = data.getParcelableExtra(AddEditNotification.MOD_NOTIFICATION);
+            mNotificationViewModel.update(notification);
             Toast.makeText(this, "Notification Updated Successfully",Toast.LENGTH_SHORT).show();
 
         }
@@ -106,10 +107,11 @@ public class AssessmentDetailActivity extends AppCompatActivity implements Delet
      * Gets the response from the delete dialog fragment
      */
     public void getResponse(int response, int position){
-        Course course = mCourseViewModel.get(position);
+        AssessmentNotification notification = mNotificationViewModel.get(position);
         if (response == 0){
             // Delete term from db
-            mCourseViewModel.delete(course);
+            mNotificationViewModel.delete(notification);
+            //TODO add code to cancel alarms
             Toast.makeText(this, "Notification deleted successfully",  Toast.LENGTH_SHORT).show();
         }
         else if (response == 1){

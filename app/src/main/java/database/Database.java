@@ -9,21 +9,24 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import database.dao.AssessmentDAO;
+import database.dao.AssessmentNotificationDAO;
 import database.dao.CourseDAO;
 import database.dao.CourseNoteDAO;
 import database.dao.TermDAO;
 import logic.entity.Assessment;
+import logic.entity.AssessmentNotification;
 import logic.entity.Course;
 import logic.entity.CourseNote;
 import logic.entity.Term;
 
-@androidx.room.Database(entities = {Term.class, Course.class, Assessment.class, CourseNote.class}, version = 1)
+@androidx.room.Database(entities = {Term.class, Course.class, Assessment.class, CourseNote.class, AssessmentNotification.class}, version = 2)
 public abstract class Database extends RoomDatabase {
     // Include the data access objects
     public abstract TermDAO termDAO();
     public abstract CourseDAO courseDAO();
     public abstract AssessmentDAO assessmentDAO();
     public abstract CourseNoteDAO courseNoteDAO();
+    public abstract AssessmentNotificationDAO notificationDAO();
     private static volatile Database INSTANCE;
 
     public static Database getDatabase(final Context context){
