@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -75,8 +74,8 @@ public class AddEditCourseNote extends AppCompatActivity {
      * Functionality for the Cancel button
      */
     private void cancel(){
-        Toast toast = Toast.makeText(getApplicationContext(),"Pressed cancel",Toast.LENGTH_SHORT);
-        toast.show();
+        //Toast toast = Toast.makeText(getApplicationContext(),"Pressed cancel",Toast.LENGTH_SHORT);
+        //toast.show();
         Intent intent = new Intent();
         setResult(RESULT_CANCELED, intent);
         finish();

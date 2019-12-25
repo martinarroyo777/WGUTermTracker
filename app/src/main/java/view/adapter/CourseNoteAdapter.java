@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -70,7 +69,6 @@ public class CourseNoteAdapter extends RecyclerView.Adapter {
             holder1.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(((NoteDetailActivity)context),current.toString(),Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(((NoteDetailActivity)context), AddEditCourseNote.class);
                     intent.putExtra(AddEditCourseNote.MOD_NOTE,current);
                     ((NoteDetailActivity)context).startActivityForResult(intent, NoteDetailActivity.NOTE_MOD_CODE);

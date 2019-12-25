@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -134,8 +133,8 @@ public class AddEditTerm extends AppCompatActivity {
      * Functionality for the Cancel button
      */
     private void cancel(){
-        Toast toast = Toast.makeText(getApplicationContext(),"Pressed cancel",Toast.LENGTH_SHORT);
-        toast.show();
+        //Toast toast = Toast.makeText(getApplicationContext(),"Pressed cancel",Toast.LENGTH_SHORT);
+        //toast.show();
         Intent intent = new Intent();
         setResult(RESULT_CANCELED, intent);
         finish();

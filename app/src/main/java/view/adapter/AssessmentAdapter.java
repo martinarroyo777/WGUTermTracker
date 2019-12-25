@@ -80,7 +80,6 @@ public class AssessmentAdapter extends RecyclerView.Adapter {
                     intent.putExtra(AssessmentDetailActivity.ASSESSMENT_DETAIL,current);
                     ((CourseDetailActivity)context).startActivityForResult(intent,CourseDetailActivity.ASSESSMENT_DETAIL_CODE);
 
-                   // Toast.makeText((CourseDetailActivity)context, current.toString(),Toast.LENGTH_SHORT).show();
                 }
             });
             // MODIFY Assessment

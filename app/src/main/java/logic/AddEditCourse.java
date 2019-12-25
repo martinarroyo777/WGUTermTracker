@@ -137,8 +137,8 @@ public class AddEditCourse extends AppCompatActivity implements AdapterView.OnIt
      * Functionality for the Cancel button
      */
     private void cancel(){
-        Toast toast = Toast.makeText(getApplicationContext(),"Pressed cancel",Toast.LENGTH_SHORT);
-        toast.show();
+       // Toast toast = Toast.makeText(getApplicationContext(),"Pressed cancel",Toast.LENGTH_SHORT);
+        //toast.show();
         Intent intent = new Intent();
         setResult(RESULT_CANCELED, intent);
         finish();

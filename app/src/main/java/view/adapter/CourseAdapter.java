@@ -77,7 +77,6 @@ public class CourseAdapter extends RecyclerView.Adapter {
             holder1.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Toast.makeText(((TermDetailActivity)context),current.toString(),Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(((TermDetailActivity)context), CourseDetailActivity.class);
                     intent.putExtra(CourseDetailActivity.COURSE_DETAIL,current);
                     ((TermDetailActivity)context).startActivityForResult(intent, TermDetailActivity.COURSE_DETAIL_CODE);
@@ -100,7 +99,6 @@ public class CourseAdapter extends RecyclerView.Adapter {
                    Intent intent = new Intent(((TermDetailActivity)context), NoteDetailActivity.class);
                    intent.putExtra(NoteDetailActivity.COURSE_DETAIL,current);
                    ((TermDetailActivity)context).startActivityForResult(intent, NoteDetailActivity.NOTE_MOD_CODE);
-                    //Toast.makeText(context,"Pressed View Course Notes Button", Toast.LENGTH_SHORT).show();
                 }
 
             });
