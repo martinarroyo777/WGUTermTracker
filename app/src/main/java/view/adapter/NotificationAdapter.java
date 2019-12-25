@@ -1,6 +1,7 @@
 package view.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +12,19 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.martinarroyo.wgutermtracker.NoteDetailActivity;
+import com.martinarroyo.wgutermtracker.AssessmentDetailActivity;
 import com.martinarroyo.wgutermtracker.R;
 
 import java.util.List;
 
+import logic.AddEditNotification;
 import logic.entity.AssessmentNotification;
 import view.DeleteDialogFragment;
 
 public class NotificationAdapter extends RecyclerView.Adapter {
     private Context context;
+    private final LayoutInflater mInflater;
+    private List<AssessmentNotification> mNotifications;
 
     // Inner class to display each item in the Recycler view - requires its own layout
     public class NotificationViewHolder extends RecyclerView.ViewHolder {
@@ -36,8 +40,7 @@ public class NotificationAdapter extends RecyclerView.Adapter {
             mDeleteNoteButton = itemView.findViewById(R.id.delete_notification_button);
         }
     }
-    private final LayoutInflater mInflater;
-    private List<AssessmentNotification> mNotifications; // Cached copy of Notes
+
     // Constructor for the Adapter -
     public NotificationAdapter(Context context){
         mInflater = LayoutInflater.from(context);
@@ -62,22 +65,21 @@ public class NotificationAdapter extends RecyclerView.Adapter {
             final int currentPos = position;
             //Set up the data for each of the views
             holder1.mNotificationTitleView.setText(current.getTitle());
+            holder1.mNotificationDateView.setText(current.getDate());
             // Set up button actions
             // View Course details
             // Set on click listener for adapter - VIEW/MODIFY Assessment
             holder1.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(((NoteDetailActivity)context),current.toString(),Toast.LENGTH_SHORT).show();
-                    /*
-                    Intent intent = new Intent(((NoteDetailActivity)context), AddEditCourseNote.class);
-                    intent.putExtra(AddEditCourseNote.MOD_NOTE,current);
-                    ((NoteDetailActivity)context).startActivityForResult(intent, NoteDetailActivity.NOTE_MOD_CODE);
+                    Toast.makeText(((AssessmentDetailActivity)context),current.toString(),Toast.LENGTH_SHORT).show();
 
-                     */
+                    Intent intent = new Intent(((AssessmentDetailActivity)context), AddEditNotification.class);
+                    intent.putExtra(AddEditNotification.MOD_NOTIFICATION,current);
+                    ((AssessmentDetailActivity)context).startActivityForResult(intent, AssessmentDetailActivity.NOTIFICATION_MOD_CODE);
+
                 }
             });
-
 
             //DELETE Notification
             holder1.mDeleteNoteButton.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +89,7 @@ public class NotificationAdapter extends RecyclerView.Adapter {
                     Bundle bundle = new Bundle();
                     bundle.putInt(DeleteDialogFragment.ITEM_POS,currentPos);
                     delete.setArguments(bundle);
-                    delete.show(((NoteDetailActivity)context).getSupportFragmentManager(),"Delete Notification?");
+                    delete.show(((AssessmentDetailActivity)context).getSupportFragmentManager(),"Delete Notification?");
                 }
 
             });

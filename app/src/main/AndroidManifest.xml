@@ -20,7 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="logic.AddEditTerm"></activity>
+        <activity android:name="logic.AddEditTerm"
+            ></activity>
         <activity android:name=".TermDetailActivity"></activity>
         <activity android:name="logic.AddEditCourse"></activity>
         <activity android:name=".CourseDetailActivity"></activity>
@@ -28,6 +29,7 @@
         <activity android:name="logic.AddEditAssessment"></activity>
         <activity android:name="logic.AddEditCourseNote"></activity>
         <activity android:name=".AssessmentDetailActivity"></activity>
+        <activity android:name="logic.AddEditNotification"></activity>
         <receiver android:name=".notification.AppBroadcastReceiver"></receiver>
     </application>
 

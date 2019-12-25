@@ -6,7 +6,11 @@
     android:layout_height="wrap_content"
     android:layout_margin="25dp"
     android:padding="5dp">
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/notification_info_holder">
     <TextView
         android:id="@+id/notification_title"
         android:layout_width="wrap_content"
@@ -15,15 +19,17 @@
         android:fontFamily="sans-serif-black"
         android:maxLength="10"
         android:maxLines="1"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/notification_title"
         android:id="@+id/notification_date"
         android:textSize="15sp"
-        android:fontFamily="sans-serif-black"/>
-
+        android:layout_marginTop="5dp"
+        />
+    </LinearLayout>
     <Button
         android:id="@+id/delete_notification_button"
         android:layout_width="50dp"

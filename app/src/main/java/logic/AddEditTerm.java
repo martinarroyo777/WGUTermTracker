@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -53,6 +54,7 @@ public class AddEditTerm extends AppCompatActivity {
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
         setContentView(R.layout.add_term_dialog);
+        setTitle("Add Term");
         // Initialize views and buttons
         termTitle = (EditText) findViewById(R.id.term_title);
         startDate = (TextView) findViewById(R.id.startdate);

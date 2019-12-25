@@ -44,6 +44,7 @@ public class AddEditAssessment extends AppCompatActivity implements AdapterView.
     @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
+        setTitle("Add Assessment");
         setContentView(R.layout.add_assessment_dialog);
         course = getIntent().getParcelableExtra(CourseDetailActivity.COURSE_DETAIL);
         // Initialize views and buttons

@@ -35,6 +35,7 @@ public class NoteDetailActivity extends AppCompatActivity implements DeleteDialo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Course Notes");
         setContentView(R.layout.note_detail_layout);
         // Get id from course detail/adapter
         Intent courseDetail = getIntent();

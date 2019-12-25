@@ -1,6 +1,9 @@
 package logic;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,8 +17,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.martinarroyo.wgutermtracker.AssessmentDetailActivity;
 import com.martinarroyo.wgutermtracker.R;
+import com.martinarroyo.wgutermtracker.notification.AppBroadcastReceiver;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 
 import logic.entity.Assessment;
@@ -44,14 +50,15 @@ public class AddEditNotification extends AppCompatActivity {
     @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
+        setTitle("Add Notification");
         setContentView(R.layout.add_notification_dialog);
         assessment = getIntent().getParcelableExtra(AssessmentDetailActivity.ASSESSMENT_DETAIL);
         // Initialize views and buttons
         mNotificationTitle = (EditText) findViewById(R.id.addnotification_title);
         mNotificationMessage = (EditText) findViewById(R.id.addnotification_message);
         mNotificationDate = findViewById(R.id.notification_date);
-        mSaveButton = (Button) findViewById(R.id.addnote_save);
-        mCancelButton = (Button) findViewById(R.id.addnote_cancel);
+        mSaveButton = (Button) findViewById(R.id.addnotification_save);
+        mCancelButton = (Button) findViewById(R.id.addnotification_cancel);
         body = new StringBuilder();
         // If there is an intent extra, set up the fields to reflect that
         Intent modIntent = getIntent();
@@ -122,8 +129,27 @@ public class AddEditNotification extends AppCompatActivity {
             notification.setMessage(this.body.toString());
             notification.setDate(this.mDate.toString());
             intent.putExtra(MOD_NOTIFICATION,notification);
+            // Update notification
+            long d = getDateMillis(mDate.toString());
+            int requestCode = notification.getId();
+            notification.setRequestCode(requestCode); // used to pass into our pending intent and cancel later, if necessary
+            int notificationId = requestCode+1;
+            String channelId = "ChannelID" + requestCode;
+            String channelName = "Channel Name " + notification.getTitle();
+            createNotification(d, notification.getTitle(),notification.getMessage(),notificationId,channelId,channelName,requestCode);
+
         } else {
-            intent.putExtra(NEW_NOTIFICATION,new AssessmentNotification(assessment.getId(),this.title,this.body.toString(),mDate.toString()));
+            AssessmentNotification newNotification = new AssessmentNotification(assessment.getId(),this.title,this.body.toString(),mDate.toString());
+            intent.putExtra(NEW_NOTIFICATION,newNotification);
+            // Create notification
+            long d = getDateMillis(mDate.toString());
+            int requestCode = newNotification.getId();
+            newNotification.setRequestCode(requestCode); // used to pass into our pending intent and cancel later, if necessary
+            int notificationId = requestCode+1;
+            String channelId = "ChannelID" + requestCode;
+            String channelName = "Channel Name " + newNotification.getTitle();
+            createNotification(d, newNotification.getTitle(),newNotification.getMessage(),notificationId,channelId,channelName,requestCode);
+
         }
         setResult(RESULT_OK,intent);
         finish();
@@ -143,6 +169,41 @@ public class AddEditNotification extends AppCompatActivity {
         DatePickerDialog dialog = new DatePickerDialog(this,android.R.style.Widget_Material_DatePicker, dateSetListener,year,month,day);
         // Show the dialog
         dialog.show();
+    }
+
+
+    /**
+     * Helper function to convert date to millis
+     * @param date
+     * @return given date in milliseconds from epoch
+     */
+    public long getDateMillis(String date){
+        LocalDate dateStart = LocalDate.parse(date);
+        LocalDateTime dateWithTime = dateStart.atStartOfDay();
+        long startMillis = dateWithTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        return startMillis;
+    }
+
+
+    /**
+     * Helper function to create notification
+     * @param date
+     * @param title
+     * @param message
+     * @param notificationId
+     * @param channelId
+     * @param channelName
+     */
+    private void createNotification(long date, String title, String message, int notificationId, String channelId, String channelName, int requestCode){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), AppBroadcastReceiver.class);
+        intent.putExtra(AppBroadcastReceiver.NOTIFICATION_TITLE, title);
+        intent.putExtra(AppBroadcastReceiver.NOTIFICATION_MESSAGE, message);
+        intent.putExtra(AppBroadcastReceiver.NOTIFICATION_ID,notificationId);
+        intent.putExtra(AppBroadcastReceiver.NOTIFICATION_CHANNEL_ID,channelId);
+        intent.putExtra(AppBroadcastReceiver.NOTIFICATION_CHANNEL_NAME,channelName);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),requestCode,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, date,pendingIntent);
     }
 
 }

@@ -49,6 +49,7 @@ public class AddEditCourse extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
+        setTitle("Add Course");
         setContentView(R.layout.add_course_dialog);
         term = getIntent().getParcelableExtra("Term");
         // Initialize views and buttons

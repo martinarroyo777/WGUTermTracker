@@ -44,6 +44,7 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
     public static final String COURSE_START_CHANNEL_NAME = "Course Start Channel Name";
     public static final String COURSE_END_CHANNEL_NAME = "Course End Channel Name";
     public static final String COURSE_DETAIL = "Course Detail";
+    public static final int ASSESSMENT_DETAIL_CODE = 30;
     RecyclerView recyclerView;
     Course course; // The current course
     private NotificationManagerCompat notificationManager;
@@ -53,6 +54,7 @@ public class CourseDetailActivity extends AppCompatActivity implements DeleteDia
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Course Detail/Assessment Overview");
         setContentView(R.layout.course_detail_layout);
         notificationManager = NotificationManagerCompat.from(this);
         /*

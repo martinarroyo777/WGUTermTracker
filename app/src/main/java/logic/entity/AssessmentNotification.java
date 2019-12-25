@@ -25,6 +25,8 @@ public class AssessmentNotification implements Parcelable {
     private String message;
     @ColumnInfo(name="date")
     private String date;
+    @Ignore
+    private int requestCode;
 
     public static final Creator<AssessmentNotification> CREATOR = new Creator<AssessmentNotification>() {
         @Override
@@ -134,5 +136,13 @@ public class AssessmentNotification implements Parcelable {
         parcel.writeString(this.title);
         parcel.writeString(this.message);
         parcel.writeString(this.date);
+    }
+    @Ignore
+    public int getRequestCode(){
+        return this.requestCode;
+    }
+    @Ignore
+    public void setRequestCode(int requestCode){
+        this.requestCode=requestCode;
     }
 }

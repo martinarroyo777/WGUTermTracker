@@ -155,4 +155,10 @@ public class Assessment implements Parcelable {
         parcel.writeString(this.type);
         parcel.writeString(this.dueDate);
     }
+
+    public String toString(){
+        return this.title + "\n" +
+                this.type + "\n" +
+                this.dueDate;
+    }
 }

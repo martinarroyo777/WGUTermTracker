@@ -1,5 +1,8 @@
 package com.martinarroyo.wgutermtracker;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.martinarroyo.wgutermtracker.notification.AppBroadcastReceiver;
 
 import java.util.List;
 
@@ -24,19 +28,20 @@ import view.adapter.NotificationAdapter;
 import view.viewmodel.NotificationViewModel;
 
 public class AssessmentDetailActivity extends AppCompatActivity implements DeleteDialogFragment.DeleteDialogListener{
-    public static Assessment assessment;
+    Assessment assessment;
     public static final int NOTIFICATION_ADD_CODE = 21;
     public static final int NOTIFICATION_MOD_CODE = 22;
-    public static final int ASSESSMENT_DETAIL_CODE = 20;
+
     public static final String ASSESSMENT_DETAIL = "Assessment Detail";
-    NotificationAdapter adapter;
+
     RecyclerView recyclerView;
     NotificationViewModel mNotificationViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.term_detail_layout);
+        setTitle("Assessment Detail");
+        setContentView(R.layout.assessment_detail_layout);
         /*
             Set up Assessment details - Top of Screen
          */
@@ -44,6 +49,7 @@ public class AssessmentDetailActivity extends AppCompatActivity implements Delet
         TextView mAssDueDate = findViewById(R.id.assessmentdetail_date);
         Intent assessmentDetail = getIntent();
         if (assessmentDetail.hasExtra(ASSESSMENT_DETAIL)){
+
             assessment = assessmentDetail.getParcelableExtra(ASSESSMENT_DETAIL);
             mAssessmentTitle.setText(assessment.getTitle());
             mAssDueDate.setText("DUE DATE: " + assessment.getDueDate());
@@ -51,7 +57,7 @@ public class AssessmentDetailActivity extends AppCompatActivity implements Delet
 
         // Set up our recycler view
         recyclerView = findViewById(R.id.assessmentdetail_recycleview);
-        adapter = new NotificationAdapter(this);
+        final NotificationAdapter adapter = new NotificationAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mNotificationViewModel = new ViewModelProvider(this).get(NotificationViewModel.class);        // Add an observer for the LiveData object
@@ -68,7 +74,7 @@ public class AssessmentDetailActivity extends AppCompatActivity implements Delet
             public void onClick(View view) {
 
                     Intent intent = new Intent(getApplicationContext(), AddEditNotification.class);
-                    intent.putExtra("assessment",assessment);
+                    intent.putExtra(ASSESSMENT_DETAIL,assessment);
                     startActivityForResult(intent,NOTIFICATION_ADD_CODE);
                 //Toast.makeText(getApplicationContext(),"Clicked addNotification button",Toast.LENGTH_SHORT).show();
             }
@@ -111,7 +117,8 @@ public class AssessmentDetailActivity extends AppCompatActivity implements Delet
         if (response == 0){
             // Delete term from db
             mNotificationViewModel.delete(notification);
-            //TODO add code to cancel alarms
+            // Cancel alarm
+            cancelAlarm(notification.getId());
             Toast.makeText(this, "Notification deleted successfully",  Toast.LENGTH_SHORT).show();
         }
         else if (response == 1){
@@ -119,4 +126,12 @@ public class AssessmentDetailActivity extends AppCompatActivity implements Delet
             Toast.makeText(this,"Canceled Notification Deletion", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void cancelAlarm(int requestCode) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AppBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, 0);
+        alarmManager.cancel(pendingIntent);
+    }
+
 }

@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,7 +77,7 @@ public class CourseAdapter extends RecyclerView.Adapter {
             holder1.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(((TermDetailActivity)context),current.toString(),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(((TermDetailActivity)context),current.toString(),Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(((TermDetailActivity)context), CourseDetailActivity.class);
                     intent.putExtra(CourseDetailActivity.COURSE_DETAIL,current);
                     ((TermDetailActivity)context).startActivityForResult(intent, TermDetailActivity.COURSE_DETAIL_CODE);

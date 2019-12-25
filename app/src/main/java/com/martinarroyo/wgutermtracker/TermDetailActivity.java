@@ -36,6 +36,7 @@ public class TermDetailActivity extends AppCompatActivity implements DeleteDialo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Term Detail/Course Overview");
         setContentView(R.layout.term_detail_layout);
         /*
             Set up Term details - Top of Screen

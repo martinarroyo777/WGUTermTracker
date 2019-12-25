@@ -17,6 +17,7 @@ import com.martinarroyo.wgutermtracker.R;
 
 import java.util.List;
 
+import logic.AddEditAssessment;
 import logic.entity.Assessment;
 import view.DeleteDialogFragment;
 
@@ -29,6 +30,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter {
         private final TextView mDueDateView;
         private final TextView mAssessmentTypeView;
         private final Button mDeleteAssessment;
+        private final Button mEditAssessment;
 
         private AssessmentViewHolder(View itemView) {
             super(itemView);
@@ -37,6 +39,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter {
             mDueDateView = viewGroup.findViewById(R.id.assessment_duedate_adapter);
             mAssessmentTypeView = viewGroup.findViewById(R.id.assessment_type_adapter);
             mDeleteAssessment = viewGroup.findViewById(R.id.delete_assessment_button);
+            mEditAssessment = viewGroup.findViewById(R.id.edit_assessment_button);
         }
     }
     private final LayoutInflater mInflater;
@@ -72,17 +75,24 @@ public class AssessmentAdapter extends RecyclerView.Adapter {
             holder1.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    /* DONT DELETE - CODE FOR MOD ASSESSMENT
+
+                    Intent intent = new Intent((CourseDetailActivity)context, AssessmentDetailActivity.class);
+                    intent.putExtra(AssessmentDetailActivity.ASSESSMENT_DETAIL,current);
+                    ((CourseDetailActivity)context).startActivityForResult(intent,CourseDetailActivity.ASSESSMENT_DETAIL_CODE);
+
+                   // Toast.makeText((CourseDetailActivity)context, current.toString(),Toast.LENGTH_SHORT).show();
+                }
+            });
+            // MODIFY Assessment
+            holder1.mEditAssessment.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
                     Intent intent = new Intent(((CourseDetailActivity)context), AddEditAssessment.class);
                     intent.putExtra(AddEditAssessment.MOD_ASSESSMENT,current);
                     ((CourseDetailActivity)context).startActivityForResult(intent, CourseDetailActivity.ASSESSMENT_MOD_CODE);
-                     */
-                    Intent intent = new Intent((CourseDetailActivity)context,AssessmentDetailActivity.class);
-                    intent.putExtra(AssessmentDetailActivity.ASSESSMENT_DETAIL,current);
-                    ((CourseDetailActivity)context).startActivityForResult(intent,AssessmentDetailActivity.ASSESSMENT_DETAIL_CODE);
                 }
-            });
-
+            }
+            );
             //DELETE Assessment
             holder1.mDeleteAssessment.setOnClickListener(new View.OnClickListener() {
                 @Override

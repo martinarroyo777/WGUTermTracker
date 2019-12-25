@@ -35,6 +35,7 @@ public class AddEditCourseNote extends AppCompatActivity {
     @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
+        setTitle("Add Note");
         setContentView(R.layout.add_note_dialog);
         course = getIntent().getParcelableExtra(CourseDetailActivity.COURSE_DETAIL);
         // Initialize views and buttons
