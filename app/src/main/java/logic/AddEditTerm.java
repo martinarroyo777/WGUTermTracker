@@ -60,6 +60,8 @@ public class AddEditTerm extends AppCompatActivity {
         endDate = (TextView) findViewById(R.id.enddate);
         save = (Button) findViewById(R.id.save);
         cancel = (Button) findViewById(R.id.cancel);
+
+
         // If there is an intent extra, set up the fields to reflect that
         Intent modIntent = getIntent();
         if (modIntent.hasExtra(MOD_TERM)){

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,9 +41,19 @@ public class AddEditCourseNote extends AppCompatActivity {
         // Initialize views and buttons
         mNoteTitle = (EditText) findViewById(R.id.addnote_title);
         mNoteBody = (EditText) findViewById(R.id.addnote_body);
-        mSaveButton = (Button) findViewById(R.id.addnote_save);
-        mCancelButton = (Button) findViewById(R.id.addnote_cancel);
+        mSaveButton = new Button(this);//(Button) findViewById(R.id.addnote_save);
+        mCancelButton = new Button(this); //(Button) findViewById(R.id.addnote_cancel);
         body = new StringBuilder();
+        /*
+            Dynamically generate add buttons to view
+         */
+        mCancelButton.setText(R.string.addmodterm_cancel);
+        mSaveButton.setText(R.string.addmodcourse_save);
+        //LinearLayout linearLayout = (LinearLayout) View.inflate(this,R.layout.add_note_dialog,null);
+        LinearLayout buttonHolder = findViewById(R.id.addnote_buttonholder);
+        //setContentView(linearLayout);
+        buttonHolder.addView(mCancelButton);
+        buttonHolder.addView(mSaveButton);
         // If there is an intent extra, set up the fields to reflect that
         Intent modIntent = getIntent();
         if (modIntent.hasExtra(MOD_NOTE)){
