@@ -122,7 +122,7 @@ public class AddEditAssessment extends AppCompatActivity implements AdapterView.
     private void save(){
 
         this.title = mAssessmentTitle.getText().toString();
-        String assessmentDueDate = dueDate.toString();
+        String assessmentDueDate = dueDate != null ? dueDate.toString():"";
         Intent intent = new Intent();
         if (update){
             assessment.setTitle(this.title);

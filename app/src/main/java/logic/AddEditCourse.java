@@ -151,39 +151,43 @@ public class AddEditCourse extends AppCompatActivity implements AdapterView.OnIt
      * Allow creation of course if the dates are valid - must fall within the given term
      */
     private void save(){
-        boolean validDates = validStartEndDates(start, end);
-        boolean withinTerm = withinTerm(start,end);
-        if (validDates && withinTerm) {
-            this.title = courseTitle.getText().toString();
-            String courseStart = start.toString();
-            String courseEnd = end.toString();
-            String mentorName = courseMentorName.getText().toString();
-            String mentorEmail = courseMentorEmail.getText().toString();
-            String mentorPhone = courseMentorPhone.getText().toString();
-            Intent intent = new Intent();
-            if (update) {
-                course.setTitle(this.title);
-                course.setStartDate(courseStart);
-                course.setEndDate(courseEnd);
-                course.setMentor_name(mentorName);
-                course.setMentor_email(mentorEmail);
-                course.setMentor_phone(mentorPhone);
-                course.setStatus(status);
-                intent.putExtra(MOD_COURSE, course);
-            } else {
+        if (validFields()) {
+            boolean validDates = validStartEndDates(start, end);
+            boolean withinTerm = withinTerm(start, end);
+            if (validDates && withinTerm) {
+                this.title = courseTitle.getText().toString();
+                String courseStart = start.toString();
+                String courseEnd = end.toString();
+                String mentorName = courseMentorName.getText().toString();
+                String mentorEmail = courseMentorEmail.getText().toString();
+                String mentorPhone = courseMentorPhone.getText().toString();
+                Intent intent = new Intent();
+                if (update) {
+                    course.setTitle(this.title);
+                    course.setStartDate(courseStart);
+                    course.setEndDate(courseEnd);
+                    course.setMentor_name(mentorName);
+                    course.setMentor_email(mentorEmail);
+                    course.setMentor_phone(mentorPhone);
+                    course.setStatus(status);
+                    intent.putExtra(MOD_COURSE, course);
+                } else {
 
-                intent.putExtra(NEW_COURSE, new Course(term.getId(), this.title, mentorName, mentorEmail, mentorPhone,
-                        courseStart, courseEnd, status));
+                    intent.putExtra(NEW_COURSE, new Course(term.getId(), this.title, mentorName, mentorEmail, mentorPhone,
+                            courseStart, courseEnd, status));
+                }
+                setResult(RESULT_OK, intent);
+                finish();
+            } else {
+                if (!validDates) {
+                    Toast.makeText(this, "Invalid start and/or end dates. Please try again", Toast.LENGTH_SHORT).show();
+                }
+                if (!withinTerm) {
+                    Toast.makeText(this, "Course start/end dates must be within the given term start/end dates. Please try again", Toast.LENGTH_SHORT).show();
+                }
             }
-            setResult(RESULT_OK, intent);
-            finish();
         } else {
-            if (!validDates){
-                Toast.makeText(this, "Invalid start and/or end dates. Please try again",Toast.LENGTH_SHORT).show();
-            }
-            if (!withinTerm){
-                Toast.makeText(this, "Course start/end dates must be within the given term start/end dates. Please try again",Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(this,"All fields must be filled out in order to save Course",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -230,5 +234,16 @@ public class AddEditCourse extends AppCompatActivity implements AdapterView.OnIt
         boolean startOk = (start.equals(termStart) || start.isAfter(termStart)) && (start.isBefore(termEnd) || start.equals(termEnd));
         boolean endOk = (end.equals(termEnd) || end.isBefore(termEnd));
         return startOk && endOk;
+    }
+
+    /**
+     * Checks if all fields are valid
+     */
+    private boolean validFields(){
+        return start != null && end != null &&
+                !courseTitle.getText().toString().isEmpty() &&
+                !courseMentorName.getText().toString().isEmpty() &&
+                !courseMentorEmail.getText().toString().isEmpty() &&
+                !courseMentorPhone.getText().toString().isEmpty();
     }
 }

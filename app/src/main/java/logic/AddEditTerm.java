@@ -147,34 +147,39 @@ public class AddEditTerm extends AppCompatActivity {
      * Functionality for the Save Button
      */
     private void save(){
-        boolean validStartDate = validStartDate(start);
-        boolean validEndDate = validEndDate(end);
-        boolean validDates = validStartEndDates(start, end);
-        if (validStartDate && validEndDate && validDates) {
-            this.title = termTitle.getText().toString();
-            String termStart = start.toString();
-            String termEnd = end.toString();
-            Intent intent = new Intent();
-            if (update) {
-                term.setTitle(this.title);
-                term.setStartDate(termStart);
-                term.setEndDate(termEnd);
-                intent.putExtra(MOD_TERM, term);
+        if (validFields()) {
+            boolean validStartDate = validStartDate(start);
+            boolean validEndDate = validEndDate(end);
+            boolean validDates = validStartEndDates(start, end);
+            if (validStartDate && validEndDate && validDates) {
+                this.title = termTitle.getText().toString();
+                String termStart = start.toString();
+                String termEnd = end.toString();
+                Intent intent = new Intent();
+                if (update) {
+                    term.setTitle(this.title);
+                    term.setStartDate(termStart);
+                    term.setEndDate(termEnd);
+                    intent.putExtra(MOD_TERM, term);
+                } else {
+                    intent.putExtra(NEW_TERM, new Term(this.title, termStart, termEnd));
+                }
+                setResult(RESULT_OK, intent);
+                finish();
             } else {
-                intent.putExtra(NEW_TERM, new Term(this.title, termStart, termEnd));
+                if (!validStartDate) {
+                    Toast.makeText(this, "Term start date cannot overlap another term", Toast.LENGTH_SHORT).show();
+                }
+                if (!validEndDate) {
+                    Toast.makeText(this, "Term end date cannot overlap another term", Toast.LENGTH_SHORT).show();
+                }
+                if (!validDates) {
+                    Toast.makeText(this, "Term start date cannot be after Term end date", Toast.LENGTH_SHORT).show();
+                }
             }
-            setResult(RESULT_OK, intent);
-            finish();
-        } else {
-            if (!validStartDate){
-                Toast.makeText(this,"Term start date cannot overlap another term", Toast.LENGTH_SHORT).show();
-            }
-            if (!validEndDate){
-                Toast.makeText(this,"Term end date cannot overlap another term", Toast.LENGTH_SHORT).show();
-            }
-            if (!validDates){
-                Toast.makeText(this,"Term start date cannot be after Term end date", Toast.LENGTH_SHORT).show();
-            }
+        }
+        else {
+            Toast.makeText(this,"You must fill in all fields to save a Term",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -237,5 +242,13 @@ public class AddEditTerm extends AppCompatActivity {
      */
     private boolean validStartEndDates(LocalDate start, LocalDate end){
         return start.isBefore(end) || start.isEqual(end);
+    }
+
+    /**
+     * Checks if fields in view are valid/have information
+     * @return
+     */
+    private boolean validFields(){
+        return start !=null && end != null && !termTitle.getText().toString().isEmpty();
     }
 }

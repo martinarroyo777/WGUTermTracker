@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -120,38 +121,42 @@ public class AddEditNotification extends AppCompatActivity {
      * Functionality for the Save Button
      */
     private void save(){
-        this.title = mNotificationTitle.getText().toString();
-        this.body.append(mNotificationMessage.getText().toString());
-        Intent intent = new Intent();
-        if (update){
-            notification.setTitle(this.title);
-            notification.setMessage(this.body.toString());
-            notification.setDate(this.mDate.toString());
-            intent.putExtra(MOD_NOTIFICATION,notification);
-            // Update notification
-            long d = getDateMillis(mDate.toString());
-            int requestCode = notification.getId();
-            notification.setRequestCode(requestCode); // used to pass into our pending intent and cancel later, if necessary
-            int notificationId = requestCode+1;
-            String channelId = "ChannelID" + requestCode;
-            String channelName = "Channel Name " + notification.getTitle();
-            createNotification(d, notification.getTitle(),notification.getMessage(),notificationId,channelId,channelName,requestCode);
+        if (mDate != null) {
+            this.title = mNotificationTitle.getText().toString();
+            this.body.append(mNotificationMessage.getText().toString());
+            Intent intent = new Intent();
+            if (update) {
+                notification.setTitle(this.title);
+                notification.setMessage(this.body.toString());
+                notification.setDate(this.mDate.toString());
+                intent.putExtra(MOD_NOTIFICATION, notification);
+                // Update notification
+                long d = getDateMillis(mDate.toString());
+                int requestCode = notification.getId();
+                notification.setRequestCode(requestCode); // used to pass into our pending intent and cancel later, if necessary
+                int notificationId = requestCode + 1;
+                String channelId = "ChannelID" + requestCode;
+                String channelName = "Channel Name " + notification.getTitle();
+                createNotification(d, notification.getTitle(), notification.getMessage(), notificationId, channelId, channelName, requestCode);
 
+            } else {
+                AssessmentNotification newNotification = new AssessmentNotification(assessment.getId(), this.title, this.body.toString(), mDate.toString());
+                intent.putExtra(NEW_NOTIFICATION, newNotification);
+                // Create notification
+                long d = getDateMillis(mDate.toString());
+                int requestCode = newNotification.getId();
+                newNotification.setRequestCode(requestCode); // used to pass into our pending intent and cancel later, if necessary
+                int notificationId = requestCode + 1;
+                String channelId = "ChannelID" + requestCode;
+                String channelName = "Channel Name " + newNotification.getTitle();
+                createNotification(d, newNotification.getTitle(), newNotification.getMessage(), notificationId, channelId, channelName, requestCode);
+
+            }
+            setResult(RESULT_OK, intent);
+            finish();
         } else {
-            AssessmentNotification newNotification = new AssessmentNotification(assessment.getId(),this.title,this.body.toString(),mDate.toString());
-            intent.putExtra(NEW_NOTIFICATION,newNotification);
-            // Create notification
-            long d = getDateMillis(mDate.toString());
-            int requestCode = newNotification.getId();
-            newNotification.setRequestCode(requestCode); // used to pass into our pending intent and cancel later, if necessary
-            int notificationId = requestCode+1;
-            String channelId = "ChannelID" + requestCode;
-            String channelName = "Channel Name " + newNotification.getTitle();
-            createNotification(d, newNotification.getTitle(),newNotification.getMessage(),notificationId,channelId,channelName,requestCode);
-
+            Toast.makeText(this,"To save a notification, you must choose a date",Toast.LENGTH_SHORT).show();
         }
-        setResult(RESULT_OK,intent);
-        finish();
     }
     /**
      * Helper function to launch DatePicker
