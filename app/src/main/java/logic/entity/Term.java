@@ -179,4 +179,11 @@ public class Term implements Parcelable {
         parcel.writeString(this.endDate);
         parcel.writeList(this.courses);
     }
+
+    public boolean equals(Term term){
+        if (term == null){
+            return false;
+        }
+        return this.id == term.getId();
+    }
 }

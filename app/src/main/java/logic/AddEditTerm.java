@@ -3,6 +3,7 @@ package logic;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -161,6 +162,8 @@ public class AddEditTerm extends AppCompatActivity {
                     term.setStartDate(termStart);
                     term.setEndDate(termEnd);
                     intent.putExtra(MOD_TERM, term);
+                    // reset update variable
+                    update = false;
                 } else {
                     intent.putExtra(NEW_TERM, new Term(this.title, termStart, termEnd));
                 }
@@ -211,9 +214,18 @@ public class AddEditTerm extends AppCompatActivity {
      */
     private boolean validStartDate(LocalDate date){
         for(Term t: TERMS){
-            // If given start date is before or equal to end date of another term
-            if(date.isBefore(LocalDate.parse(t.getEndDate())) || date.isEqual(LocalDate.parse(t.getEndDate()))){
-                return false;
+            Log.d("ValidStartDate", "Is Update" + (update));
+            // Ignore terms that are the same
+            if (update){
+                if (t.equals(term)){
+                    continue;
+                }else if(date.isBefore(LocalDate.parse(t.getStartDate())) || date.isEqual(LocalDate.parse(t.getStartDate())) || date.isEqual(LocalDate.parse(t.getEndDate()))){
+                    return false;
+                }
+            }
+            // If given start date is after start of another term
+            else if(date.isBefore(LocalDate.parse(t.getStartDate())) || date.isEqual(LocalDate.parse(t.getStartDate()))|| date.isEqual(LocalDate.parse(t.getEndDate()))){
+                    return false;
             }
         }
         return true;
@@ -225,10 +237,21 @@ public class AddEditTerm extends AppCompatActivity {
      * @return True if given end date is valid; false if not
      */
     private boolean validEndDate(LocalDate date){
+
         for(Term t: TERMS){
+            Log.d("ValidEndDate", "Terms are equal" + (t.equals(term)));
+            // Ignore terms that are the same
+            if (update){
+                if (t.equals(term)){
+                    continue;
+                }
+                else if(date.isEqual(LocalDate.parse(t.getEndDate())) || date.isEqual(LocalDate.parse(t.getEndDate())) || date.isEqual(LocalDate.parse(t.getStartDate()))){
+                    return false;
+                }
+            }
             // end date cannot be equal to a start date
-            if(date.isEqual(LocalDate.parse(t.getStartDate()))){
-                return false;
+            else if(date.isEqual(LocalDate.parse(t.getEndDate())) || date.isEqual(LocalDate.parse(t.getEndDate()))|| date.isEqual(LocalDate.parse(t.getStartDate()))){
+                    return false;
             }
         }
         return true;
